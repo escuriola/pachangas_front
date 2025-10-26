@@ -76,7 +76,7 @@ export default function Dashboard() {
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
               }}>
-                🏆 Dashboard Misteria
+                🏆 Dashboard Pachangas
               </Typography>
               <Chip
                 label="Live"
