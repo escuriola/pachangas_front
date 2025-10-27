@@ -1,26 +1,17 @@
-# Etapa de construcción
+# Build
 FROM node:20 AS build
-
 WORKDIR /app
-
+COPY package*.json ./
+RUN npm ci
 COPY . .
+ARG VITE_API_BASE_URL=/api
+ENV VITE_API_BASE_URL=${VITE_API_BASE_URL}
+RUN npm run build
 
-ENV VITE_API_BASE_URL=http://mister.escuriola.com:8844/web
-
-RUN npm install && npm run build
-
-# Etapa de producción: nginx
+# Runtime
 FROM nginx:alpine
-
-# Elimina el contenido por defecto de nginx
 RUN rm -rf /usr/share/nginx/html/*
-
-# Copia el build generado desde la etapa anterior
 COPY --from=build /app/dist /usr/share/nginx/html
-
-# Copia un archivo nginx.conf básico si lo necesitas (opcional)
-# COPY nginx.conf /etc/nginx/nginx.conf
-
+# (opcional) copia nginx.conf con fallback SPA
 EXPOSE 80
-
 CMD ["nginx", "-g", "daemon off;"]

@@ -4,8 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9519cfb5-7d2e-4452-b01d-d032811f5eeb" name="Changes" comment="Players.">
-      <change beforePath="$PROJECT_DIR$/src/layouts/dashboard/components/Misteria/PlayersTable.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/layouts/dashboard/components/Misteria/PlayersTable.jsx" afterDir="false" />
+    <list default="true" id="9519cfb5-7d2e-4452-b01d-d032811f5eeb" name="Changes" comment="First commit.">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/deploy.sh" beforeDir="false" afterPath="$PROJECT_DIR$/deploy.sh" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,7 +28,7 @@
 }</component>
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/escuriola/misteria_front&quot;,
+    &quot;url&quot;: &quot;https://github.com/escuriola/pachangas_front.git&quot;,
     &quot;accountId&quot;: &quot;2e2880d5-b712-4c7c-83be-f75aa549aed6&quot;
   }
 }</component>
@@ -44,6 +46,7 @@
     &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;credentialsType com.jetbrains.nodejs.remote.NodeJSCreateRemoteSdkForm&quot;: &quot;Docker&quot;,
     &quot;last_opened_file_path&quot;: &quot;/home/escuriola/PhpstormProjects/misteria_front&quot;,
@@ -68,8 +71,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-d6986cc7102b-09060db00ec0-JavaScript-PS-251.27812.52" />
-        <option value="bundled-php-predefined-a98d8de5180a-e5747d4f5a45-com.jetbrains.php.sharedIndexes-PS-251.27812.52" />
+        <option value="bundled-js-predefined-d6986cc7102b-3aa1da707db6-JavaScript-PS-252.26830.95" />
+        <option value="bundled-php-predefined-a98d8de5180a-9b563d34894c-com.jetbrains.php.sharedIndexes-PS-252.26830.95" />
       </set>
     </attachedChunks>
   </component>
@@ -98,14 +101,8 @@
       <workItem from="1754148600086" duration="10156000" />
       <workItem from="1754987134858" duration="6014000" />
       <workItem from="1755011343659" duration="5201000" />
-    </task>
-    <task id="LOCAL-00020" summary="News &amp; Balances.">
-      <option name="closed" value="true" />
-      <created>1752673408715</created>
-      <option name="number" value="00020" />
-      <option name="presentableId" value="LOCAL-00020" />
-      <option name="project" value="LOCAL" />
-      <updated>1752673408715</updated>
+      <workItem from="1761309680906" duration="4431000" />
+      <workItem from="1761550021889" duration="4273000" />
     </task>
     <task id="LOCAL-00021" summary="News &amp; Balances.">
       <option name="closed" value="true" />
@@ -491,7 +488,15 @@
       <option name="project" value="LOCAL" />
       <updated>1755075743096</updated>
     </task>
-    <option name="localTasksCounter" value="69" />
+    <task id="LOCAL-00069" summary="First commit.">
+      <option name="closed" value="true" />
+      <created>1761505742053</created>
+      <option name="number" value="00069" />
+      <option name="presentableId" value="LOCAL-00069" />
+      <option name="project" value="LOCAL" />
+      <updated>1761505742053</updated>
+    </task>
+    <option name="localTasksCounter" value="70" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -510,7 +515,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
-    <MESSAGE value="First commit." />
     <MESSAGE value="Dashboard template." />
     <MESSAGE value="Compatibility." />
     <MESSAGE value="Adapting." />
@@ -519,6 +523,7 @@
     <MESSAGE value="Oponents." />
     <MESSAGE value="News &amp; Balances." />
     <MESSAGE value="Players." />
-    <option name="LAST_COMMIT_MESSAGE" value="Players." />
+    <MESSAGE value="First commit." />
+    <option name="LAST_COMMIT_MESSAGE" value="First commit." />
   </component>
 </project>
