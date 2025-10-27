@@ -51,12 +51,14 @@ echo -e "\n✅ Canary OK."
 
 # Lanza el contenedor de producción: SIN publicar puertos, con labels Traefik
 echo "🚀 Levantando ${NAME} detrás de Traefik para ${SUBDOMAIN}…"
+docker rm -f "${NAME}" >/dev/null 2>&1 || true
 docker run -d --name "${NAME}" --restart unless-stopped \
-  --network "${TRAEFIK_NETWORK}" \
+  --network proxy \
   --label "traefik.enable=true" \
-  --label "traefik.http.routers.${NAME}.rule=Host(\`${SUBDOMAIN}\`) && PathPrefix(\`/\`)" \
-  --label "traefik.http.routers.${NAME}.entrypoints=${TRAEFIK_ENTRYPOINT}" \
-  --label "traefik.http.routers.${NAME}.tls.certresolver=${TRAEFIK_CERTRESOLVER}" \
+  --label "traefik.http.routers.${NAME}.rule=Host(\`${SUBDOMAIN}\`) && PathPrefix(\`/\`) && !PathPrefix(\`/api\`)" \
+  --label "traefik.http.routers.${NAME}.entrypoints=websecure" \
+  --label "traefik.http.routers.${NAME}.tls.certresolver=le" \
+  --label "traefik.http.routers.${NAME}.priority=1" \
   --label "traefik.http.services.${NAME}.loadbalancer.server.port=80" \
   "${FULL_IMAGE}" >/dev/null
 
