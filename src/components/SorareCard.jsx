@@ -167,16 +167,16 @@ export default function SorareCard({
             />
           </div>
 
-          {/* Stats — bajadas, alineadas a la izquierda y minimizadas */}
+          {/* Stats — bajadas un poco más y más compactas */}
           <div
             className="face-stats"
             style={{
-              marginTop: "34px",      // ↓ más separación para evitar solape
+              marginTop: "40px",      // ↓ más separación para evitar solape
               marginBottom: "6px",
-              padding: "0 8px",       // leve sangría a la izquierda
+              padding: "0 6px",       // leve sangría a la izquierda
               display: "flex",
               flexWrap: "wrap",
-              gap: "8px 12px",
+              gap: "6px 10px",        // gap más compacto
               alignItems: "flex-start",
               justifyContent: "flex-start",
               textAlign: "left",
@@ -188,17 +188,17 @@ export default function SorareCard({
               style={{
                 display: "flex",
                 alignItems: "center",
-                gap: "8px",
-                padding: "6px 8px",
+                gap: "6px",
+                padding: "4px 6px",
                 borderRadius: "8px",
-                background: "rgba(255,255,255,0.04)",
-                border: "1px solid rgba(255,255,255,0.08)",
+                background: "rgba(255,255,255,0.03)",
+                border: "1px solid rgba(255,255,255,0.07)",
               }}
             >
               <div
                 className="lab"
                 style={{
-                  fontSize: "10px",
+                  fontSize: "9px",
                   letterSpacing: "0.4px",
                   textTransform: "uppercase",
                   color: "rgba(255,255,255,0.55)",
@@ -208,7 +208,7 @@ export default function SorareCard({
               </div>
               <div
                 className="val"
-                style={{ fontSize: "14px", fontWeight: 700, color: "#fff" }}
+                style={{ fontSize: "12px", fontWeight: 700, color: "#fff" }}
               >
                 {nationality}
               </div>
@@ -222,29 +222,29 @@ export default function SorareCard({
                 style={{
                   display: "flex",
                   alignItems: "center",
-                  gap: "8px",
-                  padding: "6px 8px",
+                  gap: "6px",
+                  padding: "4px 6px",
                   borderRadius: "8px",
-                  background: "rgba(255,255,255,0.04)",
-                  border: "1px solid rgba(255,255,255,0.08)",
-                  minWidth: "82px",
+                  background: "rgba(255,255,255,0.03)",
+                  border: "1px solid rgba(255,255,255,0.07)",
+                  minWidth: "72px", // ↓ más estrecho para evitar 3 líneas
                 }}
               >
                 <div
                   className="lab"
                   style={{
-                    fontSize: "10px",
+                    fontSize: "9px",
                     letterSpacing: "0.4px",
                     textTransform: "uppercase",
                     color: "rgba(255,255,255,0.55)",
-                    minWidth: "34px",
+                    minWidth: "30px",
                   }}
                 >
                   {s.key}
                 </div>
                 <div
                   className="val"
-                  style={{ fontSize: "14px", fontWeight: 700, color: "#fff" }}
+                  style={{ fontSize: "12px", fontWeight: 700, color: "#fff" }}
                 >
                   {s.val}
                 </div>
@@ -280,7 +280,7 @@ export default function SorareCard({
                   fontSize: "40px",
                   lineHeight: 1.1,
                   color: "#ffffff",
-                  WebkitTextStroke: `1.1px ${accent}`, // contorno según rareza
+                  WebkitTextStroke: `1.1px ${accent}`,
                   textShadow: `
                     0 0 12px ${accent}80,
                     0 0 22px ${accent}60,
