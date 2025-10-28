@@ -1,6 +1,7 @@
 import React from "react";
 import { useParams, Link } from "react-router-dom";
 import { players, playerHistories } from "../data/dummy";
+import SorareCard from "../components/SorareCard";
 
 function StatBadge({ label, value, hint }) {
   return (
@@ -14,52 +15,58 @@ function StatBadge({ label, value, hint }) {
 
 export default function PlayerStatsPage() {
   const { id } = useParams();
-  const player = players.find((p) => p.id === id) || players[0];
+  const player = players.find((p) => String(p.id) === String(id)) || players[0];
   const history = playerHistories[player.id] || [];
+
+  // Inferir rareza si no viene en los datos
+  const rarity =
+    player.rarity ||
+    (player.value >= 800 ? "gold" : player.value >= 400 ? "silver" : "bronze");
+
+  // Mapeo de datos para SorareCard
+  const cardProps = {
+    rarity,
+    photo: player.photo || "/players/sample.png",
+    name: player.name,
+    nationality: player.nationality || "🇪🇸",
+    position: player.position === "PORTERO" ? "PORTERO" : "CAMPO",
+    age: player.age ?? "-",
+    totalPoints: player.totalPoints ?? 0,
+    supply: player.supply ?? 1,
+    supplyTotal: player.supplyTotal ?? 1000,
+    fifa: {
+      PAS:
+        player.stats?.passesCompleted ??
+        player.stats?.pass ?? // por si hay otra clave
+        "-",
+      TIR: player.stats?.shots ?? "-",
+      REG: player.stats?.dribbles ?? "-",
+      FIS: player.stats?.physical ?? "-",
+      PAR: player.stats?.saves ?? "-", // útil si es portero
+    },
+    className: "mx-auto", // centrar en la columna izquierda
+  };
 
   return (
     <div className="min-h-screen bg-slate-50">
       <header className="sticky top-0 z-20 bg-white/80 backdrop-blur border-b">
         <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
-          <Link to="/" className="font-semibold">Pachangas</Link>
+          <Link to="/" className="font-semibold">
+            Pachangas
+          </Link>
           <nav className="flex items-center gap-3 text-sm">
-            <Link to="/matches" className="px-3 py-1 rounded-lg hover:bg-slate-100">Partidos</Link>
+            <Link to="/matches" className="px-3 py-1 rounded-lg hover:bg-slate-100">
+              Partidos
+            </Link>
           </nav>
         </div>
       </header>
 
       <main className="max-w-6xl mx-auto px-4 py-6">
         <div className="grid md:grid-cols-[320px_1fr] gap-6">
-          {/* Left: cromo */}
-          <div>
-            <div className="relative rounded-3xl overflow-hidden shadow-xl bg-gradient-to-br from-amber-400 via-rose-400 to-fuchsia-500 ring-1 ring-black/10">
-              <div className="absolute inset-0 opacity-15 bg-[radial-gradient(circle_at_30%_20%,white,transparent_40%),radial-gradient(circle_at_70%_80%,white,transparent_40%)]" />
-              <div className="absolute inset-3 rounded-2xl bg-white/10 backdrop-blur-sm ring-1 ring-white/30" />
-              <div className="relative z-10 p-4 text-white">
-                <div className="flex items-center justify-between text-xs font-semibold">
-                  <span className="px-2 py-0.5 rounded-full bg-white/15 ring-1 ring-white/30">{player.position}</span>
-                  <span className="px-2 py-0.5 rounded-full bg-white/10 ring-1 ring-white/20">Valor {player.value}</span>
-                </div>
-                <div className="mt-6 flex items-center justify-center">
-                  <img src="/apple-icon.png" alt={player.name} className="w-40 h-40 object-contain drop-shadow-md" />
-                </div>
-                <h1 className="mt-6 text-3xl font-bold">{player.name}</h1>
-                <div className="mt-4 grid grid-cols-3 gap-2 text-center text-sm">
-                  <div className="rounded-lg bg-white/10 p-2 ring-1 ring-white/20">
-                    <div className="text-xl font-bold">{player.totalPoints}</div>
-                    <div className="text-xs opacity-80">Puntos</div>
-                  </div>
-                  <div className="rounded-lg bg-white/10 p-2 ring-1 ring-white/20">
-                    <div className="text-xl font-bold">{player.value}</div>
-                    <div className="text-xs opacity-80">Valor cromo</div>
-                  </div>
-                  <div className="rounded-lg bg-white/10 p-2 ring-1 ring-white/20">
-                    <div className="text-xl font-bold">{player.matchesPlayed}</div>
-                    <div className="text-xs opacity-80">Partidos</div>
-                  </div>
-                </div>
-              </div>
-            </div>
+          {/* Left: cromo unificado */}
+          <div className="flex items-start justify-center">
+            <SorareCard {...cardProps} />
           </div>
 
           {/* Right: stats & history */}
@@ -67,15 +74,18 @@ export default function PlayerStatsPage() {
             <section className="grid sm:grid-cols-3 gap-3">
               {player.position === "PORTERO" ? (
                 <>
-                  <StatBadge label="Paradas" value={player.stats.saves} />
-                  <StatBadge label="Porterías a cero" value={player.stats.cleanSheets} />
-                  <StatBadge label="Asistencias" value={player.stats.assists} />
+                  <StatBadge label="Paradas" value={player.stats?.saves ?? "-"} />
+                  <StatBadge
+                    label="Porterías a cero"
+                    value={player.stats?.cleanSheets ?? "-"}
+                  />
+                  <StatBadge label="Asistencias" value={player.stats?.assists ?? "-"} />
                 </>
               ) : (
                 <>
-                  <StatBadge label="Goles" value={player.stats.goals} />
-                  <StatBadge label="Asistencias" value={player.stats.assists} />
-                  <StatBadge label="Puntos totales" value={player.totalPoints} />
+                  <StatBadge label="Goles" value={player.stats?.goals ?? "-"} />
+                  <StatBadge label="Asistencias" value={player.stats?.assists ?? "-"} />
+                  <StatBadge label="Puntos totales" value={player.totalPoints ?? "-"} />
                 </>
               )}
             </section>
@@ -83,8 +93,13 @@ export default function PlayerStatsPage() {
             <section className="rounded-2xl bg-white ring-1 ring-black/5 p-4">
               <h2 className="text-lg font-semibold">Forma reciente</h2>
               <div className="mt-3 flex gap-2">
-                {player.recentForm.map((v, i) => (
-                  <div key={i} className="flex-1 h-10 rounded-lg bg-slate-100 ring-1 ring-slate-200 grid place-items-center text-sm font-medium">{v}</div>
+                {(player.recentForm || []).map((v, i) => (
+                  <div
+                    key={i}
+                    className="flex-1 h-10 rounded-lg bg-slate-100 ring-1 ring-slate-200 grid place-items-center text-sm font-medium"
+                  >
+                    {v}
+                  </div>
                 ))}
               </div>
             </section>
@@ -93,10 +108,18 @@ export default function PlayerStatsPage() {
               <h2 className="text-lg font-semibold">Histórico de partidos</h2>
               <div className="mt-3 divide-y">
                 {history.map((h) => (
-                  <Link key={h.matchId} to={`/matches/${h.matchId}`} className="flex items-center justify-between py-3 hover:bg-slate-50 rounded-lg px-2 -mx-2">
+                  <Link
+                    key={h.matchId}
+                    to={`/matches/${h.matchId}`}
+                    className="flex items-center justify-between py-3 hover:bg-slate-50 rounded-lg px-2 -mx-2"
+                  >
                     <div>
-                      <div className="font-medium">{h.date} · {h.team} vs {h.opponent}</div>
-                      <div className="text-sm text-slate-500">Rating {h.rating ?? "-"} · {h.result}</div>
+                      <div className="font-medium">
+                        {h.date} · {h.team} vs {h.opponent}
+                      </div>
+                      <div className="text-sm text-slate-500">
+                        Rating {h.rating ?? "-"} · {h.result}
+                      </div>
                     </div>
                     <div className="text-sm text-slate-500">Ver crónica →</div>
                   </Link>
