@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Link } from "react-router-dom";
 
@@ -11,14 +10,13 @@ export default function PlayerCard({ player }) {
         <div className="relative z-10 h-full flex flex-col p-4 text-white">
           <div className="flex items-center justify-between text-xs font-semibold">
             <span className="px-2 py-0.5 rounded-full bg-white/15 ring-1 ring-white/30">{player.position}</span>
-            <span className="px-2 py-0.5 rounded-full bg-white/10 ring-1 ring-white/20">{player.team}</span>
+            <span className="px-2 py-0.5 rounded-full bg-white/10 ring-1 ring-white/20">Valor {player.value}</span>
           </div>
           <div className="mt-6 flex-1 flex items-center justify-center">
-            <img src={player.image} alt={player.name} className="w-40 h-40 object-contain drop-shadow-md" />
+            <img src="/apple-icon.png" alt={player.name} className="w-40 h-40 object-contain drop-shadow-md" />
           </div>
           <div className="mt-6">
             <h3 className="text-2xl font-bold leading-6">{player.name}</h3>
-            <p className="text-sm/6 text-white/85">{player.nationality} · {player.age} años</p>
           </div>
           <div className="mt-4 grid grid-cols-3 gap-2 text-center text-sm">
             <div className="rounded-lg bg-white/10 p-2 ring-1 ring-white/20">
@@ -26,12 +24,12 @@ export default function PlayerCard({ player }) {
               <div className="text-xs opacity-80">Puntos</div>
             </div>
             <div className="rounded-lg bg-white/10 p-2 ring-1 ring-white/20">
-              <div className="text-xl font-bold">{player.value.toLocaleString()}</div>
-              <div className="text-xs opacity-80">Valor</div>
+              <div className="text-xl font-bold">{player.matchesPlayed}</div>
+              <div className="text-xs opacity-80">Partidos</div>
             </div>
             <div className="rounded-lg bg-white/10 p-2 ring-1 ring-white/20">
-              <div className="text-xl font-bold">{player.matches}</div>
-              <div className="text-xs opacity-80">Partidos</div>
+              <div className="text-xl font-bold">{player.position === "PORTERO" ? player.stats.saves : player.stats.goals}</div>
+              <div className="text-xs opacity-80">{player.position === "PORTERO" ? "Paradas" : "Goles"}</div>
             </div>
           </div>
         </div>

@@ -1,7 +1,6 @@
-
 import React from "react";
 import { useParams, Link } from "react-router-dom";
-import { players } from "../data/dummy";
+import { players, playerHistories } from "../data/dummy";
 
 function StatBadge({ label, value, hint }) {
   return (
@@ -16,6 +15,7 @@ function StatBadge({ label, value, hint }) {
 export default function PlayerStatsPage() {
   const { id } = useParams();
   const player = players.find((p) => p.id === id) || players[0];
+  const history = playerHistories[player.id] || [];
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -38,24 +38,23 @@ export default function PlayerStatsPage() {
               <div className="relative z-10 p-4 text-white">
                 <div className="flex items-center justify-between text-xs font-semibold">
                   <span className="px-2 py-0.5 rounded-full bg-white/15 ring-1 ring-white/30">{player.position}</span>
-                  <span className="px-2 py-0.5 rounded-full bg-white/10 ring-1 ring-white/20">{player.team}</span>
+                  <span className="px-2 py-0.5 rounded-full bg-white/10 ring-1 ring-white/20">Valor {player.value}</span>
                 </div>
                 <div className="mt-6 flex items-center justify-center">
-                  <img src={player.image} alt={player.name} className="w-40 h-40 object-contain drop-shadow-md" />
+                  <img src="/apple-icon.png" alt={player.name} className="w-40 h-40 object-contain drop-shadow-md" />
                 </div>
                 <h1 className="mt-6 text-3xl font-bold">{player.name}</h1>
-                <p className="text-white/85">{player.nationality} · {player.age} años · {player.height}cm · {player.weight}kg · {player.foot}</p>
                 <div className="mt-4 grid grid-cols-3 gap-2 text-center text-sm">
                   <div className="rounded-lg bg-white/10 p-2 ring-1 ring-white/20">
                     <div className="text-xl font-bold">{player.totalPoints}</div>
                     <div className="text-xs opacity-80">Puntos</div>
                   </div>
                   <div className="rounded-lg bg-white/10 p-2 ring-1 ring-white/20">
-                    <div className="text-xl font-bold">{player.value.toLocaleString()}</div>
-                    <div className="text-xs opacity-80">Valor</div>
+                    <div className="text-xl font-bold">{player.value}</div>
+                    <div className="text-xs opacity-80">Valor cromo</div>
                   </div>
                   <div className="rounded-lg bg-white/10 p-2 ring-1 ring-white/20">
-                    <div className="text-xl font-bold">{player.matches}</div>
+                    <div className="text-xl font-bold">{player.matchesPlayed}</div>
                     <div className="text-xs opacity-80">Partidos</div>
                   </div>
                 </div>
@@ -66,12 +65,19 @@ export default function PlayerStatsPage() {
           {/* Right: stats & history */}
           <div className="space-y-6">
             <section className="grid sm:grid-cols-3 gap-3">
-              <StatBadge label="Goles" value={player.goals} />
-              <StatBadge label="Asistencias" value={player.assists} />
-              <StatBadge label="Paradas" value={player.saves} hint={player.position === "POR" ? "Incluye penaltis" : undefined} />
-              <StatBadge label="Porterías a cero" value={player.cleanSheets} />
-              <StatBadge label="Valor" value={`${player.value.toLocaleString()} €`} />
-              <StatBadge label="Puntos totales" value={player.totalPoints} />
+              {player.position === "PORTERO" ? (
+                <>
+                  <StatBadge label="Paradas" value={player.stats.saves} />
+                  <StatBadge label="Porterías a cero" value={player.stats.cleanSheets} />
+                  <StatBadge label="Asistencias" value={player.stats.assists} />
+                </>
+              ) : (
+                <>
+                  <StatBadge label="Goles" value={player.stats.goals} />
+                  <StatBadge label="Asistencias" value={player.stats.assists} />
+                  <StatBadge label="Puntos totales" value={player.totalPoints} />
+                </>
+              )}
             </section>
 
             <section className="rounded-2xl bg-white ring-1 ring-black/5 p-4">
@@ -86,10 +92,10 @@ export default function PlayerStatsPage() {
             <section className="rounded-2xl bg-white ring-1 ring-black/5 p-4">
               <h2 className="text-lg font-semibold">Histórico de partidos</h2>
               <div className="mt-3 divide-y">
-                {player.history.map((h) => (
-                  <Link key={h.id} to={`/matches/${h.id}`} className="flex items-center justify-between py-3 hover:bg-slate-50 rounded-lg px-2 -mx-2">
+                {history.map((h) => (
+                  <Link key={h.matchId} to={`/matches/${h.matchId}`} className="flex items-center justify-between py-3 hover:bg-slate-50 rounded-lg px-2 -mx-2">
                     <div>
-                      <div className="font-medium">{h.date} · vs {h.opponent}</div>
+                      <div className="font-medium">{h.date} · {h.team} vs {h.opponent}</div>
                       <div className="text-sm text-slate-500">Rating {h.rating ?? "-"} · {h.result}</div>
                     </div>
                     <div className="text-sm text-slate-500">Ver crónica →</div>

@@ -1,4 +1,3 @@
-
 import React from "react";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import PlayerStatsPage from "./pages/PlayerStatsPage";
@@ -19,8 +18,8 @@ function Home() {
         </div>
       </header>
       <main className="max-w-6xl mx-auto px-4 py-6">
-        <h1 className="text-2xl font-semibold">Plantilla</h1>
-        <p className="text-slate-600">Haz clic en un cromo para ver las estadísticas al estilo Sorare.</p>
+        <h1 className="text-2xl font-semibold">Jugadores (fútbol sala)</h1>
+        <p className="text-slate-600">Haz clic en un cromo para ver estadísticas e histórico. Los equipos se forman en cada partido (Azules, Rosas o Amarillos).</p>
         <div className="mt-4 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {players.map((p) => <PlayerCard key={p.id} player={p} />)}
         </div>

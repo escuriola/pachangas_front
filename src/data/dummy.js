@@ -1,91 +1,121 @@
-
-// Simple dummy dataset for players and matches
+// Fichero de datos 'dummy' para preparar la API de Pachangas (fútbol sala)
 
 export const players = [
-  {
-    id: "1",
-    name: "Iker Casillas",
-    position: "POR",
-    team: "Pachangas FC",
-    nationality: "🇪🇸",
-    age: 34,
-    height: 185,
-    weight: 79,
-    foot: "Right",
-    value: 6_500_000,
-    totalPoints: 124,
-    matches: 18,
-    goals: 0,
-    assists: 1,
-    saves: 72,
-    cleanSheets: 9,
-    image: "/apple-icon.png",
-    recentForm: ["7.5","6.8","8.4","7.1","9.0"],
-    history: [
-      { id: "m1", date: "2025-09-12", opponent: "Barrio United", result: "2-0", rating: 8.2, saves: 7, cleanSheet: true },
-      { id: "m2", date: "2025-09-20", opponent: "Los Galácticos", result: "1-1", rating: 7.0, saves: 3, cleanSheet: false },
-      { id: "m3", date: "2025-10-05", opponent: "Atlético Vecinos", result: "0-0", rating: 7.8, saves: 5, cleanSheet: true },
-    ],
-  },
-  {
-    id: "9",
-    name: "Leo Pachanga",
-    position: "DEL",
-    team: "Pachangas FC",
-    nationality: "🇪🇸",
-    age: 28,
-    height: 172,
-    weight: 70,
-    foot: "Left",
-    value: 12_300_000,
-    totalPoints: 168,
-    matches: 18,
-    goals: 16,
-    assists: 7,
-    saves: 0,
-    cleanSheets: 0,
-    image: "/apple-icon.png",
-    recentForm: ["9.4","8.7","6.2","10.0","7.9"],
-    history: [
-      { id: "m1", date: "2025-09-12", opponent: "Barrio United", result: "2-0", rating: 8.9, goals: 1, assists: 1 },
-      { id: "m2", date: "2025-09-20", opponent: "Los Galácticos", result: "1-1", rating: 7.1, goals: 0, assists: 0 },
-      { id: "m3", date: "2025-10-05", opponent: "Atlético Vecinos", result: "0-0", rating: 6.8, goals: 0, assists: 0 },
-    ],
-  },
+  { id: "1",  name: "Escuriola", position: "PORTERO", value: 96, totalPoints: 128, matchesPlayed: 12, stats: { goals: 0,  assists: 2, saves: 47, cleanSheets: 5 }, recentForm: [9.1, 8.5, 7.8, 8.9, 9.4] },
+  { id: "2",  name: "Raúl",      position: "CAMPO",    value: 90, totalPoints: 154, matchesPlayed: 14, stats: { goals: 11, assists: 7, saves: 0,  cleanSheets: 0 }, recentForm: [8.2, 7.5, 9.0, 8.8, 9.1] },
+  { id: "3",  name: "Gabi",      position: "CAMPO",    value: 88, totalPoints: 140, matchesPlayed: 13, stats: { goals: 10, assists: 6, saves: 0,  cleanSheets: 0 }, recentForm: [7.9, 8.0, 8.7, 7.4, 8.9] },
+  { id: "4",  name: "Kaiser",    position: "CAMPO",    value: 84, totalPoints: 121, matchesPlayed: 12, stats: { goals: 8,  assists: 5, saves: 0,  cleanSheets: 0 }, recentForm: [7.1, 8.3, 8.0, 7.6, 8.4] },
+  { id: "5",  name: "Manolo",    position: "CAMPO",    value: 82, totalPoints: 110, matchesPlayed: 12, stats: { goals: 7,  assists: 3, saves: 0,  cleanSheets: 0 }, recentForm: [7.0, 7.2, 7.8, 7.5, 8.0] },
+  { id: "6",  name: "Gómez",     position: "PORTERO",  value: 89, totalPoints: 119, matchesPlayed: 13, stats: { goals: 0,  assists: 1, saves: 52, cleanSheets: 4 }, recentForm: [8.4, 7.8, 8.1, 8.7, 8.9] },
+  { id: "7",  name: "Edu",       position: "CAMPO",    value: 86, totalPoints: 132, matchesPlayed: 14, stats: { goals: 9,  assists: 8, saves: 0,  cleanSheets: 0 }, recentForm: [8.6, 8.2, 8.9, 9.1, 8.8] },
+  { id: "8",  name: "Miguel",    position: "CAMPO",    value: 80, totalPoints: 99,  matchesPlayed: 11, stats: { goals: 6,  assists: 2, saves: 0,  cleanSheets: 0 }, recentForm: [7.3, 7.8, 7.2, 7.9, 7.6] },
+  { id: "9",  name: "Jorge",     position: "CAMPO",    value: 83, totalPoints: 112, matchesPlayed: 12, stats: { goals: 7,  assists: 4, saves: 0,  cleanSheets: 0 }, recentForm: [7.7, 8.1, 7.9, 8.0, 8.2] },
+  { id: "10", name: "Johny",     position: "CAMPO",    value: 81, totalPoints: 104, matchesPlayed: 12, stats: { goals: 6,  assists: 5, saves: 0,  cleanSheets: 0 }, recentForm: [7.5, 7.6, 7.9, 7.8, 8.0] },
 ];
 
 export const matches = [
   {
     id: "m1",
-    date: "2025-09-12",
-    home: "Pachangas FC",
-    away: "Barrio United",
-    score: "2-0",
-    events: [
-      { minute: 17, type: "goal", team: "Pachangas FC", player: "Leo Pachanga", assist: "Miguelito", bodyPart: "Left foot" },
-      { minute: 52, type: "goal", team: "Pachangas FC", player: "Miguelito", assist: "Leo Pachanga", bodyPart: "Header" },
-      { minute: 65, type: "save", team: "Pachangas FC", player: "Iker Casillas", detail: "One-on-one stop" },
-    ],
-    lineup: {
-      "Pachangas FC": ["Iker Casillas", "Juan", "Paco", "Luigi", "Marco", "Miguelito", "Sergi", "Álex", "Dani", "Leo Pachanga", "Toni"],
-      "Barrio United": ["Tomás", "Javi", "Pedro", "Rafa", "Iván", "Óscar", "Luis", "Óliver", "Jorge", "Mario", "Rubén"],
+    date: "2025-10-01",
+    teams: { home: "Azules FC", away: "Rosas FC" },
+    score: "5-3",
+    lineups: {
+      "Azules FC": ["Escuriola", "Raúl", "Kaiser", "Edu", "Jorge"],
+      "Rosas FC":  ["Gómez", "Gabi", "Manolo", "Miguel", "Johny"],
     },
-    report: "Partido dominado por Pachangas FC, presión alta y dos golpes certeros. Casillas salvó el 2-1 con una parada clave en el 65'.",
+    events: [
+      { minute: 3,  type: "goal", team: "Azules FC",  player: "Raúl",   assist: "Edu" },
+      { minute: 6,  type: "goal", team: "Rosas FC",   player: "Gabi" },
+      { minute: 11, type: "save", team: "Azules FC",  player: "Escuriola", detail: "Penalti parado" },
+      { minute: 15, type: "goal", team: "Azules FC",  player: "Kaiser", assist: "Jorge" },
+      { minute: 21, type: "goal", team: "Rosas FC",   player: "Miguel", assist: "Johny" },
+      { minute: 28, type: "goal", team: "Azules FC",  player: "Edu",    assist: "Raúl" },
+      { minute: 33, type: "goal", team: "Azules FC",  player: "Jorge" },
+    ],
+    report: "Partido vibrante. Escuriola paró un penalti clave; Raúl y Edu lideraron la ofensiva.",
   },
   {
     id: "m2",
-    date: "2025-09-20",
-    home: "Los Galácticos",
-    away: "Pachangas FC",
-    score: "1-1",
-    events: [
-      { minute: 34, type: "goal", team: "Los Galácticos", player: "Cristo", assist: "James" },
-      { minute: 71, type: "goal", team: "Pachangas FC", player: "Leo Pachanga", assist: "Miguelito" },
-    ],
-    lineup: {
-      "Los Galácticos": ["Pepe", "Ramos", "Marcelo", "James", "Casemiro", "Isco", "Cristo", "Benz", "Kroos", "Carva", "Keylor"],
-      "Pachangas FC": ["Iker Casillas", "Juan", "Paco", "Luigi", "Marco", "Miguelito", "Sergi", "Álex", "Dani", "Leo Pachanga", "Toni"],
+    date: "2025-10-12",
+    teams: { home: "Amarillos FC", away: "Azules FC" },
+    score: "2-2",
+    lineups: {
+      "Amarillos FC": ["Gómez", "Gabi", "Edu", "Jorge", "Johny"],
+      "Azules FC":    ["Escuriola", "Raúl", "Kaiser", "Manolo", "Miguel"],
     },
-    report: "Intercambio de golpes con un reparto justo de puntos. Leo empató tras una gran combinación con Miguelito.",
+    events: [
+      { minute: 4,  type: "goal", team: "Azules FC",    player: "Raúl" },
+      { minute: 9,  type: "save", team: "Amarillos FC", player: "Gómez", detail: "Mano cambiada espectacular" },
+      { minute: 17, type: "goal", team: "Amarillos FC", player: "Edu", assist: "Gabi" },
+      { minute: 29, type: "goal", team: "Azules FC",    player: "Manolo", assist: "Kaiser" },
+      { minute: 36, type: "goal", team: "Amarillos FC", player: "Johny", assist: "Jorge" },
+    ],
+    report: "Igualadísimo. Apariciones decisivas de Gómez y reparto justo de puntos.",
+  },
+  {
+    id: "m3",
+    date: "2025-10-22",
+    teams: { home: "Rosas FC", away: "Amarillos FC" },
+    score: "1-3",
+    lineups: {
+      "Rosas FC":     ["Gómez", "Kaiser", "Edu", "Miguel", "Johny"],
+      "Amarillos FC": ["Escuriola", "Raúl", "Gabi", "Manolo", "Jorge"],
+    },
+    events: [
+      { minute: 7,  type: "goal", team: "Amarillos FC", player: "Gabi", assist: "Raúl" },
+      { minute: 14, type: "save", team: "Rosas FC",     player: "Gómez", detail: "1v1 al borde del área" },
+      { minute: 18, type: "goal", team: "Amarillos FC", player: "Manolo", assist: "Jorge" },
+      { minute: 26, type: "goal", team: "Rosas FC",     player: "Edu" },
+      { minute: 31, type: "goal", team: "Amarillos FC", player: "Raúl", assist: "Gabi" },
+    ],
+    report: "Amarillos muy sólidos. Combinaciones rápidas entre Raúl, Gabi y Jorge marcaron diferencias.",
   },
 ];
+
+export const playerHistories = {
+  "1": [
+    { matchId: "m1", date: "2025-10-01", team: "Azules FC",    opponent: "Rosas FC",    result: "5-3", rating: 9.0, saves: 1, cleanSheet: false },
+    { matchId: "m2", date: "2025-10-12", team: "Azules FC",    opponent: "Amarillos FC", result: "2-2", rating: 8.2, saves: 0, cleanSheet: false },
+  ],
+  "2": [
+    { matchId: "m1", date: "2025-10-01", team: "Azules FC", opponent: "Rosas FC",    result: "5-3", rating: 8.9, goals: 1, assists: 1 },
+    { matchId: "m2", date: "2025-10-12", team: "Azules FC", opponent: "Amarillos FC", result: "2-2", rating: 7.8, goals: 1 },
+    { matchId: "m3", date: "2025-10-22", team: "Amarillos FC", opponent: "Rosas FC",  result: "3-1", rating: 8.6, goals: 1, assists: 1 },
+  ],
+  "3": [
+    { matchId: "m1", date: "2025-10-01", team: "Rosas FC", opponent: "Azules FC",    result: "3-5", rating: 7.6, goals: 1 },
+    { matchId: "m3", date: "2025-10-22", team: "Amarillos FC", opponent: "Rosas FC",  result: "3-1", rating: 8.1, assists: 2 },
+  ],
+  "4": [
+    { matchId: "m1", date: "2025-10-01", team: "Azules FC", opponent: "Rosas FC",    result: "5-3", rating: 7.9, goals: 1, assists: 1 },
+    { matchId: "m2", date: "2025-10-12", team: "Azules FC", opponent: "Amarillos FC", result: "2-2", rating: 7.4, assists: 1 },
+  ],
+  "5": [
+    { matchId: "m2", date: "2025-10-12", team: "Azules FC", opponent: "Amarillos FC", result: "2-2", rating: 7.6, goals: 1 },
+    { matchId: "m3", date: "2025-10-22", team: "Amarillos FC", opponent: "Rosas FC",  result: "3-1", rating: 7.9, goals: 1 },
+  ],
+  "6": [
+    { matchId: "m1", date: "2025-10-01", team: "Rosas FC", opponent: "Azules FC",    result: "3-5", rating: 7.8, saves: 3, cleanSheet: false },
+    { matchId: "m2", date: "2025-10-12", team: "Amarillos FC", opponent: "Azules FC", result: "2-2", rating: 8.5, saves: 1, cleanSheet: false },
+    { matchId: "m3", date: "2025-10-22", team: "Rosas FC", opponent: "Amarillos FC",  result: "1-3", rating: 8.0, saves: 2, cleanSheet: false },
+  ],
+  "7": [
+    { matchId: "m1", date: "2025-10-01", team: "Azules FC", opponent: "Rosas FC",    result: "5-3", rating: 8.4, goals: 1, assists: 1 },
+    { matchId: "m2", date: "2025-10-12", team: "Amarillos FC", opponent: "Azules FC", result: "2-2", rating: 8.2, goals: 1 },
+    { matchId: "m3", date: "2025-10-22", team: "Rosas FC", opponent: "Amarillos FC",  result: "1-3", rating: 7.5, goals: 1 },
+  ],
+  "8": [
+    { matchId: "m1", date: "2025-10-01", team: "Rosas FC", opponent: "Azules FC",    result: "3-5", rating: 7.4, goals: 1 },
+    { matchId: "m2", date: "2025-10-12", team: "Azules FC", opponent: "Amarillos FC", result: "2-2", rating: 7.2 },
+    { matchId: "m3", date: "2025-10-22", team: "Rosas FC", opponent: "Amarillos FC",  result: "1-3", rating: 7.1 },
+  ],
+  "9": [
+    { matchId: "m1", date: "2025-10-01", team: "Azules FC", opponent: "Rosas FC",    result: "5-3", rating: 8.0, goals: 1 },
+    { matchId: "m2", date: "2025-10-12", team: "Amarillos FC", opponent: "Azules FC", result: "2-2", rating: 7.9, assists: 1 },
+    { matchId: "m3", date: "2025-10-22", team: "Amarillos FC", opponent: "Rosas FC",  result: "3-1", rating: 8.3, assists: 1 },
+  ],
+  "10": [
+    { matchId: "m1", date: "2025-10-01", team: "Rosas FC", opponent: "Azules FC",    result: "3-5", rating: 7.5, assists: 1 },
+    { matchId: "m2", date: "2025-10-12", team: "Amarillos FC", opponent: "Azules FC", result: "2-2", rating: 7.8, goals: 1 },
+  ],
+};

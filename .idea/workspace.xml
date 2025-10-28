@@ -4,9 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9519cfb5-7d2e-4452-b01d-d032811f5eeb" name="Changes" comment="Clean front.">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="9519cfb5-7d2e-4452-b01d-d032811f5eeb" name="Changes" comment="Add pages.">
       <change beforePath="$PROJECT_DIR$/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/PlayerCard.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/PlayerCard.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/data/dummy.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/data/dummy.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/MatchDetailPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/MatchDetailPage.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/MatchesListPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/MatchesListPage.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/PlayerStatsPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/PlayerStatsPage.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -103,14 +107,6 @@
       <workItem from="1755011343659" duration="5201000" />
       <workItem from="1761309680906" duration="4431000" />
       <workItem from="1761550021889" duration="4273000" />
-    </task>
-    <task id="LOCAL-00023" summary="News &amp; Balances.">
-      <option name="closed" value="true" />
-      <created>1752674543542</created>
-      <option name="number" value="00023" />
-      <option name="presentableId" value="LOCAL-00023" />
-      <option name="project" value="LOCAL" />
-      <updated>1752674543542</updated>
     </task>
     <task id="LOCAL-00024" summary="News &amp; Balances.">
       <option name="closed" value="true" />
@@ -496,7 +492,15 @@
       <option name="project" value="LOCAL" />
       <updated>1761575226705</updated>
     </task>
-    <option name="localTasksCounter" value="72" />
+    <task id="LOCAL-00072" summary="Add pages.">
+      <option name="closed" value="true" />
+      <created>1761643081519</created>
+      <option name="number" value="00072" />
+      <option name="presentableId" value="LOCAL-00072" />
+      <option name="project" value="LOCAL" />
+      <updated>1761643081519</updated>
+    </task>
+    <option name="localTasksCounter" value="73" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -525,6 +529,7 @@
     <MESSAGE value="Players." />
     <MESSAGE value="First commit." />
     <MESSAGE value="Clean front." />
-    <option name="LAST_COMMIT_MESSAGE" value="Clean front." />
+    <MESSAGE value="Add pages." />
+    <option name="LAST_COMMIT_MESSAGE" value="Add pages." />
   </component>
 </project>
