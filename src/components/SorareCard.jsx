@@ -1,168 +1,150 @@
 import React from "react";
 import clsx from "clsx";
+import "@fontsource/bebas-neue"; // Tipografía heroica
 
 /**
- * Cromo 3D estilo Sorare/FIFA (v2):
- * - Foto PNG transparente para integrarse con el fondo
- * - Canto con bisel + sombra (mejor 3D)
- * - Arriba derecha: PUNTOS (totalPoints) + “PTS”
- * - Banda de stats:
- *   * Campo: ED, PAS, TIR, REG, FIS
- *   * Portero: ED, PAS, PAR, FIS
- * - Sin badge verde ni texto de rareza en la UI (solo marco visual)
+ * Cromo 3D v3 — realismo, blur, barras de stats, foto integrada
  */
 export default function SorareCard({
-                                     rarity = "gold",                  // gold | silver | bronze (solo afecta al marco)
-                                     photo = "/players/sample.png",    // PNG con transparencia
-                                     topLeftBadge = "Pachangas",
-                                     nationality = "🏳️",
-                                     position = "-",                   // "PORTERO" | "CAMPO"
-                                     age = "-",
+                                     rarity = "gold",
+                                     photo = "/players/sample.png",
                                      name = "PLAYER",
-                                     value = 80,                       // rating general (se mantiene arriba-izq pequeño)
-                                     totalPoints = 100,                // ahora va arriba-dcha como “PTS”
-                                     supply = 1,
-                                     supplyTotal = 1000,
-                                     // Para CAMPO: PAS, TIR, REG, FIS | Para PT: PAS, PAR, FIS (REG/TIR se ignoran)
-                                     fifa = { PAS: 75, TIR: 70, REG: 72, FIS: 74, PAR: 60 },
+                                     nationality = "🏳️",
+                                     position = "CAMPO",
+                                     age = "-",
+                                     totalPoints = 100,
+                                     fifa = { PAS: 80, TIR: 80, REG: 80, FIS: 80, PAR: 80 },
                                      className,
                                    }) {
   const isGK = position === "PORTERO";
-  const posAbbr = isGK ? "PT" : "CP";
-
-  // Stats mostradas con abreviaturas solicitadas
   const stats = isGK
     ? [
-      { k: "ED", v: age },
-      { k: "PAS", v: fifa.PAS ?? "-" },
-      { k: "PAR", v: fifa.PAR ?? "-" },
-      { k: "FIS", v: fifa.FIS ?? "-" },
+      { label: "ED", val: age },
+      { label: "PAS", val: fifa.PAS },
+      { label: "PAR", val: fifa.PAR },
+      { label: "FIS", val: fifa.FIS },
     ]
     : [
-      { k: "ED", v: age },
-      { k: "PAS", v: fifa.PAS ?? "-" },
-      { k: "TIR", v: fifa.TIR ?? "-" },
-      { k: "REG", v: fifa.REG ?? "-" },
-      { k: "FIS", v: fifa.FIS ?? "-" },
+      { label: "ED", val: age },
+      { label: "PAS", val: fifa.PAS },
+      { label: "TIR", val: fifa.TIR },
+      { label: "REG", val: fifa.REG },
+      { label: "FIS", val: fifa.FIS },
     ];
 
   return (
-    <div className={clsx("group perspective-1200", className)}>
+    <div
+      className={clsx(
+        "relative w-80 h-[520px] rounded-[26px] overflow-hidden cursor-pointer transform-gpu transition-all duration-700",
+        "hover:rotate-y-6 hover:-rotate-x-3",
+        "shadow-[0_40px_90px_rgba(0,0,0,.6)]",
+        className
+      )}
+      style={{
+        perspective: "1200px",
+        background:
+          rarity === "gold"
+            ? "linear-gradient(145deg, #eab308 0%, #fef08a 60%, #92400e 100%)"
+            : rarity === "silver"
+              ? "linear-gradient(145deg, #9ca3af 0%, #f3f4f6 60%, #475569 100%)"
+              : "linear-gradient(145deg, #92400e 0%, #f59e0b 60%, #431407 100%)",
+      }}
+    >
+      {/* fondo difuminado con blur */}
       <div
-        className={clsx(
-          "relative h-[520px] w-80 transition-transform duration-500",
-          "preserve-3d group-hover:rotate-y-6 group-hover:-rotate-x-3"
-        )}
-      >
-        {/* Marco con brillo */}
-        <div
-          className={clsx(
-            "absolute inset-0 rounded-[28px] ring-1 ring-black/10",
-            "shadow-[0_24px_70px_rgba(0,0,0,.55)] bg-[length:200%_200%] animate-shimmer",
-            {
-              "bg-gold-frame": rarity === "gold",
-              "bg-silver-frame": rarity === "silver",
-              "bg-bronze-frame": rarity === "bronze",
-            }
-          )}
-        />
+        className="absolute inset-0 bg-cover bg-center blur-xl opacity-30"
+        style={{ backgroundImage: `url(${photo})` }}
+      />
 
-        {/* Cuerpo de la carta */}
-        <div className="absolute inset-[8px] rounded-3xl overflow-hidden shadow-2xl bg-neutral-900">
-          {/* Relleno por rareza */}
-          <div
-            className={clsx("absolute inset-0",
-              {
-                "bg-gold-fill": rarity === "gold",
-                "bg-silver-fill": rarity === "silver",
-                "bg-bronze-fill": rarity === "bronze",
-              })}
-          />
+      {/* reflejo animado diagonal */}
+      <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/20 to-transparent translate-x-[-200%] hover:translate-x-[200%] transition-transform duration-[2000ms]" />
 
-          {/* Glint diagonal */}
-          <div className="pointer-events-none absolute -left-1/3 top-0 h-full w-1/2 rotate-12 bg-gradient-to-r from-transparent via-white/18 to-transparent translate-x-[-150%] group-hover:translate-x-[300%] transition-transform duration-[1200ms]" />
-
-          {/* Cabecera */}
-          <div className="relative z-10 px-3 pt-3 pb-1 text-white flex items-start justify-between">
-            {/* Escudo/badge de liga */}
-            <div className="px-2 py-1 rounded-md text-[10px] font-bold uppercase bg-black/25 border border-white/15">
-              {topLeftBadge}
-            </div>
-
-            {/* Rating y posición (compacto arriba-izq) */}
-            <div className="text-right leading-4">
-              <div className="text-sm font-extrabold opacity-90">{value}</div>
-              <div className="text-[10px] font-bold opacity-85">{posAbbr}</div>
-            </div>
-          </div>
-
-          {/* Foto PNG integrada (transparente) */}
-          <div className="relative z-10 mt-0.5 flex items-center justify-center">
-            <img
-              src={photo}
-              onError={(e) => { e.currentTarget.src = "/players/sample.png"; }}
-              alt={name}
-              className="h-64 object-contain drop-shadow-[0_16px_36px_rgba(0,0,0,0.45)] translate-z-8 group-hover:translate-z-10 transition-transform duration-300"
-            />
-          </div>
-
-          {/* Barra superior derecha con PUNTOS */}
-          <div className="absolute right-3 top-3 z-20 text-white text-right">
-            <div className="leading-3 rounded-md bg-black/35 border border-white/15 px-2 py-1 backdrop-blur">
-              <div className="text-xl font-black tracking-tight">{totalPoints}</div>
-              <div className="text-[10px] font-bold opacity-90">PTS</div>
-            </div>
-          </div>
-
-          {/* Banda de stats reducidas (abreviadas) */}
-          <div className="relative z-10 mt-3 mx-3 rounded-xl bg-black/35 backdrop-blur border border-white/10 text-white px-3 py-2">
-            <div className="flex items-center justify-between text-[11px] font-bold tracking-wide">
-              <div className="flex items-center gap-2 opacity-90">
-                <span>{nationality}</span>
-              </div>
-              <div className="flex gap-3">
-                {stats.map(({ k, v }) => (
-                  <span key={k}>
-                    {k} {v}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* Pie: nombre + supply (sin badge de puntos) */}
-          <div className="absolute inset-x-0 bottom-0 p-3">
-            <div className="rounded-xl bg-black/45 backdrop-blur-md border border-white/10 px-3 py-2 text-white">
-              <div className="text-2xl font-extrabold tracking-wide">{name.toUpperCase()}</div>
-              <div className="mt-2 flex items-center justify-between">
-                <div className="rounded-full bg-black/40 border border-white/10 text-[11px] px-2 py-1">
-                  {supply}/{supplyTotal}
-                </div>
-                {/* hueco limpio a la derecha */}
-                <div className="w-10" />
-              </div>
-            </div>
-          </div>
+      {/* encabezado */}
+      <div className="relative z-10 flex justify-between items-start px-4 pt-3 text-white">
+        <div className="px-2 py-1 rounded-md text-[10px] font-bold uppercase bg-black/25 border border-white/15">
+          Pachangas
         </div>
-
-        {/* CANTO 3D: base + bisel + brillo lateral */}
-        <div className="absolute -right-1 top-2 bottom-2 w-2 rounded-r-2xl overflow-hidden">
-          {/* capa base */}
-          <div className={clsx(
-            "absolute inset-0",
-            rarity === "gold"   ? "bg-gradient-to-b from-amber-500 to-amber-800" :
-              rarity === "silver" ? "bg-gradient-to-b from-slate-300 to-slate-600" :
-                "bg-gradient-to-b from-amber-700 to-amber-900"
-          )} />
-          {/* bisel oscuro interno */}
-          <div className="absolute inset-y-0 left-0 w-[3px] bg-black/25" />
-          {/* highlight fino en el borde */}
-          <div className="absolute inset-y-0 right-0 w-[2px] bg-white/35 mix-blend-screen" />
+        <div className="text-right">
+          <div className="text-3xl font-extrabold leading-5 drop-shadow">
+            {totalPoints}
+          </div>
+          <div className="text-[11px] font-bold opacity-90">PTS</div>
         </div>
-
-        {/* sombra de apoyo bajo la carta */}
-        <div className="absolute -bottom-3 left-6 right-6 h-6 rounded-full bg-black/40 blur-lg opacity-40" />
       </div>
+
+      {/* imagen del jugador */}
+      <div className="relative z-10 flex justify-center items-end h-[340px] mt-[-10px]">
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+        <img
+          src={photo}
+          onError={(e) => (e.currentTarget.src = "/players/sample.png")}
+          alt={name}
+          className="relative max-h-[360px] object-contain drop-shadow-[0_20px_30px_rgba(0,0,0,0.6)]"
+          style={{
+            width: "auto",
+            height: "100%",
+            objectFit: "contain",
+            transform: "translateZ(30px)",
+          }}
+        />
+      </div>
+
+      {/* stats */}
+      <div className="relative z-20 px-4 pb-2 mt-1">
+        <div className="flex justify-between text-white text-[12px] font-bold mb-1">
+          {stats.map((s) => (
+            <span key={s.label}>
+              {s.label}: {s.val}
+            </span>
+          ))}
+        </div>
+        {/* barras */}
+        <div className="flex justify-between gap-1">
+          {stats.map((s) => (
+            <div
+              key={s.label}
+              className={clsx(
+                "h-1.5 rounded-full flex-1 transition-all duration-500",
+                rarity === "gold"
+                  ? "bg-gradient-to-r from-yellow-300 to-amber-500"
+                  : rarity === "silver"
+                    ? "bg-gradient-to-r from-gray-200 to-gray-500"
+                    : "bg-gradient-to-r from-amber-700 to-amber-900"
+              )}
+              style={{ width: `${Math.min((s.val / 100) * 100, 100)}%` }}
+            />
+          ))}
+        </div>
+      </div>
+
+      {/* pie con nombre y posición */}
+      <div className="absolute bottom-0 w-full px-4 py-3 bg-black/50 backdrop-blur text-white">
+        <div
+          className="text-center text-3xl font-black tracking-wider leading-7"
+          style={{
+            fontFamily: '"Bebas Neue", sans-serif',
+            letterSpacing: "0.05em",
+          }}
+        >
+          {name.toUpperCase()}
+        </div>
+        <div className="text-right text-[11px] font-bold opacity-90 mt-1 pr-1">
+          {isGK ? "PORTERO" : "CAMPO"}
+        </div>
+      </div>
+
+      {/* canto 3D mejorado */}
+      <div
+        className="absolute right-0 top-2 bottom-2 w-[6px] rounded-r-2xl shadow-inner"
+        style={{
+          background:
+            rarity === "gold"
+              ? "linear-gradient(to bottom, #fde047, #b45309)"
+              : rarity === "silver"
+                ? "linear-gradient(to bottom, #e5e7eb, #64748b)"
+                : "linear-gradient(to bottom, #b45309, #78350f)",
+        }}
+      />
     </div>
   );
 }
