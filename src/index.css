@@ -43,3 +43,18 @@ html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; 
 .animate-shimmer { animation: shimmer 4s linear infinite; }
 .preserve-3d { transform-style: preserve-3d; }
 .perspective-1200 { perspective: 1200px; }
+
+.preserve-3d { transform-style: preserve-3d; }
+@keyframes shimmer { 0% { background-position: 0% 50% } 100% { background-position: 200% 50% } }
+.animate-shimmer { animation: shimmer 4s linear infinite; }
+
+/* Marcos por rareza */
+.bg-gold-frame {
+    background-image: conic-gradient(from 180deg at 50% 50%, #fef9c3, #fde68a, #f59e0b, #fcd34d, #fde68a, #fef9c3);
+}
+.bg-silver-frame {
+    background-image: conic-gradient(from 180deg at 50% 50%, #f8fafc, #cbd5e1, #94a3b8, #e2e8f0, #cbd5e1, #f8fafc);
+}
+.bg-bronze-frame {
+    background-image: conic-gradient(from 180deg at 50% 50%, #b45309, #92400e, #78350f, #9a3412, #b45309);
+}

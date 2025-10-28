@@ -6,7 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="9519cfb5-7d2e-4452-b01d-d032811f5eeb" name="Changes" comment="Add pages.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/deploy.sh" beforeDir="false" afterPath="$PROJECT_DIR$/deploy.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/PlayerCard.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/PlayerCard.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/SorareCard.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/SorareCard.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -103,30 +105,6 @@
       <workItem from="1755011343659" duration="5201000" />
       <workItem from="1761309680906" duration="4431000" />
       <workItem from="1761550021889" duration="4273000" />
-    </task>
-    <task id="LOCAL-00030" summary="Players.">
-      <option name="closed" value="true" />
-      <created>1754057979094</created>
-      <option name="number" value="00030" />
-      <option name="presentableId" value="LOCAL-00030" />
-      <option name="project" value="LOCAL" />
-      <updated>1754057979094</updated>
-    </task>
-    <task id="LOCAL-00031" summary="Players.">
-      <option name="closed" value="true" />
-      <created>1754062649137</created>
-      <option name="number" value="00031" />
-      <option name="presentableId" value="LOCAL-00031" />
-      <option name="project" value="LOCAL" />
-      <updated>1754062649137</updated>
-    </task>
-    <task id="LOCAL-00032" summary="Players.">
-      <option name="closed" value="true" />
-      <created>1754063012843</created>
-      <option name="number" value="00032" />
-      <option name="presentableId" value="LOCAL-00032" />
-      <option name="project" value="LOCAL" />
-      <updated>1754063012843</updated>
     </task>
     <task id="LOCAL-00033" summary="Players.">
       <option name="closed" value="true" />
@@ -496,7 +474,31 @@
       <option name="project" value="LOCAL" />
       <updated>1761655282753</updated>
     </task>
-    <option name="localTasksCounter" value="79" />
+    <task id="LOCAL-00079" summary="Add pages.">
+      <option name="closed" value="true" />
+      <created>1761659785801</created>
+      <option name="number" value="00079" />
+      <option name="presentableId" value="LOCAL-00079" />
+      <option name="project" value="LOCAL" />
+      <updated>1761659785801</updated>
+    </task>
+    <task id="LOCAL-00080" summary="Add pages.">
+      <option name="closed" value="true" />
+      <created>1761659891758</created>
+      <option name="number" value="00080" />
+      <option name="presentableId" value="LOCAL-00080" />
+      <option name="project" value="LOCAL" />
+      <updated>1761659891758</updated>
+    </task>
+    <task id="LOCAL-00081" summary="Add pages.">
+      <option name="closed" value="true" />
+      <created>1761660580727</created>
+      <option name="number" value="00081" />
+      <option name="presentableId" value="LOCAL-00081" />
+      <option name="project" value="LOCAL" />
+      <updated>1761660580727</updated>
+    </task>
+    <option name="localTasksCounter" value="82" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
