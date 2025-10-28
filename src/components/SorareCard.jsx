@@ -8,10 +8,10 @@ import "@fontsource/londrina-shadow/400.css"; // Fuente para el nombre
 /**
  * Cromo v4 — tilt + luz, notch esquina, borde por rareza
  * Ajustes:
- * - Foto más alta (desde arriba casi hasta el nombre)
- * - Stats más abajo (sin solaparse con la foto)
+ * - Foto alta (hasta casi el nombre)
+ * - Stats más abajo, alineadas a la izquierda y minimizadas
  * - Nombre con borde del color del tipo de carta
- * - PTS coloreado según rareza
+ * - PTS con color según rareza
  * - Sin profundidad lateral
  */
 export default function SorareCard({
@@ -140,13 +140,13 @@ export default function SorareCard({
             </div>
           </div>
 
-          {/* Imagen del jugador — ocupa casi todo hasta el nombre */}
+          {/* Imagen del jugador */}
           <div
             className="face-photo"
             style={{
               marginTop: "0",
-              marginBottom: "12px",
-              height: "352px", // ↑ más alta para empujar stats
+              marginBottom: "10px",
+              height: "348px", // alto de la foto
               display: "flex",
               alignItems: "flex-start",
               justifyContent: "center",
@@ -167,30 +167,95 @@ export default function SorareCard({
             />
           </div>
 
-          {/* Stats: más abajo para evitar solape con la foto */}
+          {/* Stats — bajadas, alineadas a la izquierda y minimizadas */}
           <div
             className="face-stats"
             style={{
-              marginTop: "30px", // ↓ baja un poco más que antes
+              marginTop: "34px",      // ↓ más separación para evitar solape
+              marginBottom: "6px",
+              padding: "0 8px",       // leve sangría a la izquierda
+              display: "flex",
+              flexWrap: "wrap",
+              gap: "8px 12px",
+              alignItems: "flex-start",
+              justifyContent: "flex-start",
+              textAlign: "left",
             }}
           >
-            <div className="stat nationality">
-              <div className="lab">NAC</div>
-              <div className="val">{nationality}</div>
+            {/* Nacionalidad compacta */}
+            <div
+              className="stat nationality"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "8px",
+                padding: "6px 8px",
+                borderRadius: "8px",
+                background: "rgba(255,255,255,0.04)",
+                border: "1px solid rgba(255,255,255,0.08)",
+              }}
+            >
+              <div
+                className="lab"
+                style={{
+                  fontSize: "10px",
+                  letterSpacing: "0.4px",
+                  textTransform: "uppercase",
+                  color: "rgba(255,255,255,0.55)",
+                }}
+              >
+                NAC
+              </div>
+              <div
+                className="val"
+                style={{ fontSize: "14px", fontWeight: 700, color: "#fff" }}
+              >
+                {nationality}
+              </div>
             </div>
 
+            {/* Otras stats compactas */}
             {statCols.map((s) => (
-              <div className="stat" key={s.key}>
-                <div className="lab">{s.key}</div>
-                <div className="val">{s.val}</div>
+              <div
+                className="stat"
+                key={s.key}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "8px",
+                  padding: "6px 8px",
+                  borderRadius: "8px",
+                  background: "rgba(255,255,255,0.04)",
+                  border: "1px solid rgba(255,255,255,0.08)",
+                  minWidth: "82px",
+                }}
+              >
+                <div
+                  className="lab"
+                  style={{
+                    fontSize: "10px",
+                    letterSpacing: "0.4px",
+                    textTransform: "uppercase",
+                    color: "rgba(255,255,255,0.55)",
+                    minWidth: "34px",
+                  }}
+                >
+                  {s.key}
+                </div>
+                <div
+                  className="val"
+                  style={{ fontSize: "14px", fontWeight: 700, color: "#fff" }}
+                >
+                  {s.val}
+                </div>
               </div>
             ))}
           </div>
 
           {/* Pie: nombre + valor + posición */}
-          <div className="face-footer" style={{ marginTop: "16px" }}>
+          <div className="face-footer" style={{ marginTop: "10px" }}>
             <div className="name-box" style={{ position: "relative" }}>
-              {/* banda translúcida detrás del nombre */}
+              {/* faja translúcida detrás del nombre */}
               <div
                 aria-hidden="true"
                 style={{
@@ -212,7 +277,7 @@ export default function SorareCard({
                     '"Londrina Shadow", system-ui, -apple-system, "Segoe UI", Roboto, Inter, Arial, sans-serif',
                   fontWeight: 400,
                   letterSpacing: "0.8px",
-                  fontSize: "40px", // tamaño grande
+                  fontSize: "40px",
                   lineHeight: 1.1,
                   color: "#ffffff",
                   WebkitTextStroke: `1.1px ${accent}`, // contorno según rareza
