@@ -5,7 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9519cfb5-7d2e-4452-b01d-d032811f5eeb" name="Changes" comment="Add pages.">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/SorareCard.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/SorareCard.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -103,14 +102,6 @@
       <workItem from="1755011343659" duration="5201000" />
       <workItem from="1761309680906" duration="4431000" />
       <workItem from="1761550021889" duration="4273000" />
-    </task>
-    <task id="LOCAL-00035" summary="Players.">
-      <option name="closed" value="true" />
-      <created>1754078608403</created>
-      <option name="number" value="00035" />
-      <option name="presentableId" value="LOCAL-00035" />
-      <option name="project" value="LOCAL" />
-      <updated>1754078608403</updated>
     </task>
     <task id="LOCAL-00036" summary="Players.">
       <option name="closed" value="true" />
@@ -496,7 +487,15 @@
       <option name="project" value="LOCAL" />
       <updated>1761664459622</updated>
     </task>
-    <option name="localTasksCounter" value="84" />
+    <task id="LOCAL-00084" summary="Add pages.">
+      <option name="closed" value="true" />
+      <created>1761664914580</created>
+      <option name="number" value="00084" />
+      <option name="presentableId" value="LOCAL-00084" />
+      <option name="project" value="LOCAL" />
+      <updated>1761664914580</updated>
+    </task>
+    <option name="localTasksCounter" value="85" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
