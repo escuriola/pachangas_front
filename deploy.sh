@@ -21,6 +21,7 @@ git pull --rebase --autostash
 
 echo "🏗️  Construyendo imagen ${FULL_IMAGE}…"
 docker buildx build \
+  --no-cache \
   --progress=plain \
   --build-arg NODE_OPTIONS="--max-old-space-size=1024" \
   --build-arg VITE_SOURCEMAP=false \
