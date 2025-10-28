@@ -7,14 +7,17 @@ export default function PlayerCard({ player }) {
     <Link to={`/players/${player.id}`} className="block">
       <SorareCard
         rarity={player.rarity}
-        photo={player.photo}
+        photo={player.photo || "/players/sample.jpg"}
         topLeftBadge="Pachangas"
         nationality={player.nationality || "🏳️"}
         position={player.position}
         age={player.age ?? "-"}
         name={player.name}
+        value={player.value}
+        totalPoints={player.totalPoints}   // ← badge verde con puntos
         supply={player.supply ?? 1}
         supplyTotal={player.supplyTotal ?? 1000}
+        fifa={player.fifa}                 // ← stats FIFA
         className="mx-auto"
       />
     </Link>

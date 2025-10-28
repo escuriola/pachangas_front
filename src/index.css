@@ -5,18 +5,13 @@
 /* Tipografía y suavizado */
 html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
 
-/* 3D helpers */
+/* 3D helpers & shimmer */
 .perspective-1200 { perspective: 1200px; }
 .preserve-3d { transform-style: preserve-3d; }
-
-/* Animación de brillo del borde */
-@keyframes shimmer {
-    0% { background-position: 0% 50% }
-    100% { background-position: 200% 50% }
-}
+@keyframes shimmer { 0% { background-position: 0% 50% } 100% { background-position: 200% 50% } }
 .animate-shimmer { animation: shimmer 4s linear infinite; }
 
-/* Marcos por rareza (conic/linear gradients) */
+/* Marcos por rareza (solo visual) */
 .bg-gold-frame {
     background-image:
             conic-gradient(from 180deg at 50% 50%,
@@ -33,7 +28,7 @@ html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; 
             #b45309, #92400e, #78350f, #9a3412, #b45309);
 }
 
-/* Relleno interior por rareza */
+/* Relleno interior */
 .bg-gold-fill {
     background-image:
             radial-gradient(120% 80% at 50% 0%, rgba(255,255,255,0.25) 0%, transparent 45%),
