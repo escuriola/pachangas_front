@@ -13,22 +13,16 @@ html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; 
 
 /* Marcos por rareza (solo visual) */
 .bg-gold-frame {
-    background-image:
-            conic-gradient(from 180deg at 50% 50%,
-            #fef9c3, #fde68a, #f59e0b, #fcd34d, #fde68a, #fef9c3);
+    background-image: conic-gradient(from 180deg at 50% 50%, #fef9c3, #fde68a, #f59e0b, #fcd34d, #fde68a, #fef9c3);
 }
 .bg-silver-frame {
-    background-image:
-            conic-gradient(from 180deg at 50% 50%,
-            #f8fafc, #cbd5e1, #94a3b8, #e2e8f0, #cbd5e1, #f8fafc);
+    background-image: conic-gradient(from 180deg at 50% 50%, #f8fafc, #cbd5e1, #94a3b8, #e2e8f0, #cbd5e1, #f8fafc);
 }
 .bg-bronze-frame {
-    background-image:
-            conic-gradient(from 180deg at 50% 50%,
-            #b45309, #92400e, #78350f, #9a3412, #b45309);
+    background-image: conic-gradient(from 180deg at 50% 50%, #b45309, #92400e, #78350f, #9a3412, #b45309);
 }
 
-/* Relleno interior */
+/* Relleno interior por rareza */
 .bg-gold-fill {
     background-image:
             radial-gradient(120% 80% at 50% 0%, rgba(255,255,255,0.25) 0%, transparent 45%),
