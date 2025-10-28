@@ -6,7 +6,7 @@ WORKDIR /app
 COPY package*.json ./
 
 # Si hay lockfile, usa ci; si no, usa install
-RUN if [ -f package-lock.json ]; then npm ci; else npm install; fi
+RUN npm install
 
 # Copiamos el resto del código
 COPY . .
