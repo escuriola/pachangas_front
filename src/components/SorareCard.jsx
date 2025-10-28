@@ -8,9 +8,10 @@ import "@fontsource/londrina-shadow/400.css"; // Fuente para el nombre
 /**
  * Cromo v4 — tilt + luz, notch esquina, borde por rareza
  * Ajustes:
- * - Foto más alta
- * - Stats más bajas
- * - Nombre más grande y con borde del color del tipo de carta
+ * - Foto más alta (desde arriba casi hasta el nombre)
+ * - Stats más abajo (sin solaparse con la foto)
+ * - Nombre con borde del color del tipo de carta
+ * - PTS coloreado según rareza
  * - Sin profundidad lateral
  */
 export default function SorareCard({
@@ -30,13 +31,20 @@ export default function SorareCard({
   const cardRef = useRef(null);
   const [tilt, setTilt] = useState({ rx: 0, ry: 0, lx: 50, ly: 50 });
 
-  // Color según rareza
-  const borderColor =
+  // Colores según rareza
+  const accent =
     rarity === "gold"
       ? "#f5c84c"
       : rarity === "silver"
         ? "#d8d8d8"
         : "#b87333";
+
+  const accentSoft =
+    rarity === "gold"
+      ? "rgba(245,200,76,0.18)"
+      : rarity === "silver"
+        ? "rgba(216,216,216,0.18)"
+        : "rgba(184,115,51,0.18)";
 
   const statCols = isGK
     ? [
@@ -96,19 +104,49 @@ export default function SorareCard({
           {/* Cabecera */}
           <div className="face-header" style={{ zIndex: 2 }}>
             <div className="chip">Pachangas</div>
-            <div className="pts">
-              <div className="pts-num">{totalPoints}</div>
-              <div className="pts-lab">PTS</div>
+            <div
+              className="pts"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "6px",
+                padding: "4px 8px",
+                borderRadius: "10px",
+                border: `1px solid ${accent}`,
+                background: accentSoft,
+                boxShadow: `0 0 10px ${accent}40, inset 0 0 8px rgba(0,0,0,0.25)`,
+              }}
+            >
+              <div
+                className="pts-num"
+                style={{
+                  fontWeight: 700,
+                  color: accent,
+                  textShadow: `0 0 10px ${accent}66, 0 1px 2px rgba(0,0,0,0.6)`,
+                }}
+              >
+                {totalPoints}
+              </div>
+              <div
+                className="pts-lab"
+                style={{
+                  fontSize: "11px",
+                  color: "rgba(255,255,255,0.9)",
+                  letterSpacing: "0.5px",
+                }}
+              >
+                PTS
+              </div>
             </div>
           </div>
 
-          {/* Imagen del jugador */}
+          {/* Imagen del jugador — ocupa casi todo hasta el nombre */}
           <div
             className="face-photo"
             style={{
               marginTop: "0",
-              marginBottom: "10px",
-              height: "340px", // ↑ más alta
+              marginBottom: "12px",
+              height: "352px", // ↑ más alta para empujar stats
               display: "flex",
               alignItems: "flex-start",
               justifyContent: "center",
@@ -124,16 +162,16 @@ export default function SorareCard({
                 maxHeight: "100%",
                 width: "auto",
                 objectFit: "contain",
-                filter: "drop-shadow(0 18px 36px rgba(0,0,0,0.6))",
+                filter: "drop-shadow(0 20px 36px rgba(0,0,0,0.65))",
               }}
             />
           </div>
 
-          {/* Stats más abajo */}
+          {/* Stats: más abajo para evitar solape con la foto */}
           <div
             className="face-stats"
             style={{
-              marginTop: "26px",
+              marginTop: "30px", // ↓ baja un poco más que antes
             }}
           >
             <div className="stat nationality">
@@ -152,7 +190,7 @@ export default function SorareCard({
           {/* Pie: nombre + valor + posición */}
           <div className="face-footer" style={{ marginTop: "16px" }}>
             <div className="name-box" style={{ position: "relative" }}>
-              {/* banda translúcida detrás */}
+              {/* banda translúcida detrás del nombre */}
               <div
                 aria-hidden="true"
                 style={{
@@ -163,7 +201,7 @@ export default function SorareCard({
                   height: "48px",
                   borderRadius: "10px",
                   background:
-                    "linear-gradient(90deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05) 55%, rgba(255,255,255,0) 100%)",
+                    "linear-gradient(90deg, rgba(255,255,255,0.12), rgba(255,255,255,0.06) 55%, rgba(255,255,255,0) 100%)",
                 }}
               />
               <div
@@ -174,13 +212,13 @@ export default function SorareCard({
                     '"Londrina Shadow", system-ui, -apple-system, "Segoe UI", Roboto, Inter, Arial, sans-serif',
                   fontWeight: 400,
                   letterSpacing: "0.8px",
-                  fontSize: "40px",
+                  fontSize: "40px", // tamaño grande
                   lineHeight: 1.1,
                   color: "#ffffff",
-                  WebkitTextStroke: `1.1px ${borderColor}`, // contorno según rareza
+                  WebkitTextStroke: `1.1px ${accent}`, // contorno según rareza
                   textShadow: `
-                    0 0 12px ${borderColor}80,
-                    0 0 22px ${borderColor}60,
+                    0 0 12px ${accent}80,
+                    0 0 22px ${accent}60,
                     0 2px 4px rgba(0,0,0,0.9)
                   `,
                 }}
