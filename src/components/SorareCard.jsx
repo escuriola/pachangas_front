@@ -6,7 +6,12 @@ import "@fontsource/inter/700.css";
 import "@fontsource/londrina-shadow/400.css"; // <-- Fuente SOLO para el nombre
 
 /**
- * Cromo v4 — tilt + luz, notch esquina, grosor 3D ~5cm, borde fino por rareza
+ * Cromo v4 — tilt + luz, notch esquina, borde por rareza
+ * Ajustes:
+ * - Aumenta el espacio de la foto (imagen más grande)
+ * - Sección de estadísticas desciende más
+ * - Nombre más grande y con mejor legibilidad sobre fondo oscuro
+ * - Se desactiva la “profundidad” lateral
  */
 export default function SorareCard({
                                      rarity = "gold",                  // gold | silver | bronze
@@ -91,19 +96,35 @@ export default function SorareCard({
             </div>
           </div>
 
-          {/* Foto centrada */}
-          <div className="face-photo">
+          {/* Foto centrada: más grande y con más aire inferior para empujar stats */}
+          <div
+            className="face-photo"
+            style={{
+              marginTop: "4px",
+              marginBottom: "18px",    // ↑ empuja las estadísticas hacia abajo
+              minHeight: "220px",      // ↑ reserva vertical para foto
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
             <img
               src={photo}
               onError={(e) => { e.currentTarget.src = "/players/sample.png"; }}
               alt={name}
+              style={{
+                display: "block",
+                maxHeight: "300px",    // ↑ foto más grande
+                width: "auto",
+                filter: "drop-shadow(0 18px 36px rgba(0,0,0,.45))",
+              }}
             />
           </div>
 
           {/* Stats: bajadas un poco más y alineadas a la izquierda */}
           <div
             className="face-stats"
-            style={{ marginTop: "14px" }} // <-- desplazamos un poco más hacia abajo
+            style={{ marginTop: "22px" }} // ↑ más separación respecto al nombre/foto
           >
             <div className="stat nationality">
               <div className="lab">NAC</div>
@@ -120,13 +141,34 @@ export default function SorareCard({
 
           {/* Pie: nombre + valor + posición */}
           <div className="face-footer">
-            <div className="name-box">
+            <div className="name-box" style={{ position: "relative" }}>
+              {/* sutil banda translúcida para mejorar contraste del nombre */}
+              <div
+                aria-hidden="true"
+                style={{
+                  position: "absolute",
+                  left: "-6px",
+                  right: "8px",
+                  top: "0px",
+                  height: "36px",
+                  borderRadius: "8px",
+                  background:
+                    "linear-gradient(90deg, rgba(255,255,255,0.12), rgba(255,255,255,0.05) 55%, rgba(255,255,255,0) 100%)",
+                }}
+              />
               <div
                 className="player-name"
                 style={{
+                  position: "relative",
                   fontFamily: '"Londrina Shadow", system-ui, -apple-system, "Segoe UI", Roboto, Inter, Arial, sans-serif',
                   fontWeight: 400,
-                  letterSpacing: "0.5px",
+                  letterSpacing: "0.6px",
+                  fontSize: "32px",       // ↑ un poco más grande
+                  lineHeight: 1.05,
+                  color: "#f5f5f5",
+                  WebkitTextStroke: "0.35px rgba(0,0,0,0.45)", // borde suave para legibilidad
+                  textShadow:
+                    "0 1px 0 rgba(0,0,0,0.5), 0 0 8px rgba(255,255,255,0.12)",
                 }}
               >
                 {name.toUpperCase()}
@@ -137,9 +179,9 @@ export default function SorareCard({
           </div>
         </div>
 
-        {/* Grosor: cara derecha e inferior (profundidad ~5cm visual) */}
-        <div className="card3d-side-right" />
-        <div className="card3d-side-bottom" />
+        {/* Desactiva la “profundidad” visual de los laterales */}
+        <div className="card3d-side-right" style={{ display: "none" }} />
+        <div className="card3d-side-bottom" style={{ display: "none" }} />
       </div>
     </div>
   );
