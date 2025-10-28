@@ -8,9 +8,9 @@ import "@fontsource/londrina-shadow/400.css"; // Fuente para el nombre
 /**
  * Cromo v4 — tilt + luz, notch esquina, borde por rareza
  * Ajustes:
- * - Foto mucho más alta (ocupa casi todo el cromo)
- * - Stats bajadas (más espacio para la imagen)
- * - Nombre más grande y más visible sobre fondo negro
+ * - Foto más alta
+ * - Stats más bajas
+ * - Nombre más grande y con borde del color del tipo de carta
  * - Sin profundidad lateral
  */
 export default function SorareCard({
@@ -29,6 +29,14 @@ export default function SorareCard({
   const isGK = position === "PORTERO";
   const cardRef = useRef(null);
   const [tilt, setTilt] = useState({ rx: 0, ry: 0, lx: 50, ly: 50 });
+
+  // Color según rareza
+  const borderColor =
+    rarity === "gold"
+      ? "#f5c84c"
+      : rarity === "silver"
+        ? "#d8d8d8"
+        : "#b87333";
 
   const statCols = isGK
     ? [
@@ -82,7 +90,6 @@ export default function SorareCard({
           "--ly": `${tilt.ly}%`,
         }}
       >
-        {/* Cara frontal */}
         <div className="card3d-face">
           <div className="card3d-glint" />
 
@@ -95,13 +102,13 @@ export default function SorareCard({
             </div>
           </div>
 
-          {/* Imagen del jugador — ocupa casi todo el alto */}
+          {/* Imagen del jugador */}
           <div
             className="face-photo"
             style={{
               marginTop: "0",
-              marginBottom: "12px",
-              height: "330px", // ↑ ocupa casi todo el cromo
+              marginBottom: "10px",
+              height: "340px", // ↑ más alta
               display: "flex",
               alignItems: "flex-start",
               justifyContent: "center",
@@ -122,11 +129,11 @@ export default function SorareCard({
             />
           </div>
 
-          {/* Stats: más abajo, centradas */}
+          {/* Stats más abajo */}
           <div
             className="face-stats"
             style={{
-              marginTop: "24px", // separa bien de la foto
+              marginTop: "26px",
             }}
           >
             <div className="stat nationality">
@@ -143,9 +150,9 @@ export default function SorareCard({
           </div>
 
           {/* Pie: nombre + valor + posición */}
-          <div className="face-footer" style={{ marginTop: "14px" }}>
+          <div className="face-footer" style={{ marginTop: "16px" }}>
             <div className="name-box" style={{ position: "relative" }}>
-              {/* faja translúcida detrás del nombre */}
+              {/* banda translúcida detrás */}
               <div
                 aria-hidden="true"
                 style={{
@@ -153,10 +160,10 @@ export default function SorareCard({
                   left: "-6px",
                   right: "8px",
                   top: "2px",
-                  height: "44px",
+                  height: "48px",
                   borderRadius: "10px",
                   background:
-                    "linear-gradient(90deg, rgba(255,255,255,0.15), rgba(255,255,255,0.07) 55%, rgba(255,255,255,0) 100%)",
+                    "linear-gradient(90deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05) 55%, rgba(255,255,255,0) 100%)",
                 }}
               />
               <div
@@ -167,12 +174,15 @@ export default function SorareCard({
                     '"Londrina Shadow", system-ui, -apple-system, "Segoe UI", Roboto, Inter, Arial, sans-serif',
                   fontWeight: 400,
                   letterSpacing: "0.8px",
-                  fontSize: "38px", // ↑ más grande
+                  fontSize: "40px",
                   lineHeight: 1.1,
-                  color: "#fafafa",
-                  WebkitTextStroke: "0.45px rgba(0,0,0,0.65)", // contorno más visible
-                  textShadow:
-                    "0 1px 2px rgba(0,0,0,0.8), 0 0 14px rgba(255,255,255,0.25)",
+                  color: "#ffffff",
+                  WebkitTextStroke: `1.1px ${borderColor}`, // contorno según rareza
+                  textShadow: `
+                    0 0 12px ${borderColor}80,
+                    0 0 22px ${borderColor}60,
+                    0 2px 4px rgba(0,0,0,0.9)
+                  `,
                 }}
               >
                 {name.toUpperCase()}
@@ -182,7 +192,7 @@ export default function SorareCard({
                 style={{
                   position: "relative",
                   fontSize: "12px",
-                  color: "rgba(255,255,255,0.8)",
+                  color: "rgba(255,255,255,0.85)",
                   marginTop: "2px",
                 }}
               >
