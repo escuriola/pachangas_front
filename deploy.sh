@@ -26,7 +26,7 @@ docker buildx build \
   --build-arg NODE_OPTIONS="--max-old-space-size=1024" \
   --build-arg VITE_SOURCEMAP=false \
   --build-arg VITE_API_BASE_URL=/api \
-  -t "${FULL_IMAGE}" ./front
+  -t "${FULL_IMAGE}" .
 
 echo "🧹 Eliminando contenedor estable previo (si existe)…"
 docker rm -f "${NAME}" >/dev/null 2>&1 || true
