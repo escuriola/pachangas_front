@@ -8,20 +8,56 @@ import { players } from "./data/dummy";
 
 function Home() {
   return (
-    <div className="min-h-screen bg-slate-50">
-      <header className="sticky top-0 z-20 bg-white/80 backdrop-blur border-b">
-        <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
-          <Link to="/" className="font-semibold">Pachangas</Link>
+    <div className="min-h-screen bg-slate-950 text-white">
+      {/* Header oscuro */}
+      <header className="sticky top-0 z-20 border-b border-white/10 bg-slate-950/70 backdrop-blur">
+        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
+          <Link to="/" className="text-lg font-semibold tracking-wide">
+            Pachangas
+          </Link>
           <nav className="flex items-center gap-3 text-sm">
-            <Link to="/matches" className="px-3 py-1 rounded-lg hover:bg-slate-100">Partidos</Link>
+            <Link to="/matches" className="rounded-lg px-3 py-1 hover:bg-white/5 transition">
+              Partidos
+            </Link>
           </nav>
         </div>
       </header>
-      <main className="max-w-6xl mx-auto px-4 py-6">
-        <h1 className="text-2xl font-semibold">Jugadores (fútbol sala)</h1>
-        <p className="text-slate-600">Haz clic en un cromo para ver estadísticas e histórico. Los equipos se forman en cada partido (Azules, Rosas o Amarillos).</p>
-        <div className="mt-4 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {players.map((p) => <PlayerCard key={p.id} player={p} />)}
+
+      {/* Hero sutil */}
+      <section className="relative">
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(70%_50%_at_50%_0%,rgba(255,255,255,0.08),transparent)]" />
+        <div className="mx-auto max-w-6xl px-4 pt-8 pb-3 relative z-10">
+          <h1 className="text-2xl font-semibold">Jugadores (fútbol sala)</h1>
+          <p className="mt-1 text-sm text-white/70">
+            Haz clic en un cromo para ver estadísticas e histórico. Los equipos se forman en cada
+            partido (Azules, Rosas o Amarillos).
+          </p>
+        </div>
+      </section>
+
+      {/* Grid de jugadores */}
+      <main className="mx-auto max-w-6xl px-4 pb-10 pt-2">
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {players.map((p) => (
+            <div
+              key={p.id}
+              className="group rounded-2xl bg-white/5 ring-1 ring-white/10 p-3 hover:bg-white/10 transition"
+            >
+              {/* Contenedor “glass” para el cromo; PlayerCard renderiza el cromo dentro */}
+              <PlayerCard player={p} />
+              <div className="mt-3 flex items-center justify-between text-xs text-white/60">
+                <span className="rounded-md bg-white/5 px-2 py-0.5 ring-1 ring-white/10">
+                  {p.position === "PORTERO" ? "Portero" : "Jugador"}
+                </span>
+                <Link
+                  to={`/players/${p.id}`}
+                  className="text-white/80 hover:text-white transition"
+                >
+                  Ver perfil →
+                </Link>
+              </div>
+            </div>
+          ))}
         </div>
       </main>
     </div>
