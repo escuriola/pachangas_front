@@ -4,7 +4,7 @@ import SorareCard from "./SorareCard";
 
 export default function PlayerCard({ player }) {
   return (
-    <Link to={`/players/${player.id}`} className="block hover:scale-[1.03] transition-transform duration-500">
+    <Link to={`/players/${player.id}`} className="block">
       <SorareCard
         rarity={player.rarity}
         photo={player.photo || "/players/sample.png"}

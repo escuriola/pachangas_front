@@ -58,3 +58,166 @@ html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; 
 .bg-bronze-frame {
     background-image: conic-gradient(from 180deg at 50% 50%, #b45309, #92400e, #78350f, #9a3412, #b45309);
 }
+
+/* ====== Card 3D v4 ====== */
+
+.card3d-wrapper {
+    perspective: 1400px;
+    display: inline-block;
+}
+
+.card3d-root {
+    --thickness: 26px;             /* “5 cm” visual */
+    --radius: 22px;
+    --cut: 36px;                   /* notch esquina sup-izq */
+    --edge: #fbbf24;               /* por defecto oro */
+    --edge-dark: #b45309;
+    --edge-light: #fde68a;
+    --front-bg: #000;              /* face interior negra */
+    position: relative;
+    width: 20rem;                  /* 320px */
+    height: 520px;
+    transform-style: preserve-3d;
+    transition: transform .35s ease;
+    cursor: pointer;
+    filter: drop-shadow(0 28px 70px rgba(0,0,0,.55));
+}
+
+/* Rarezas (colores) */
+.rarity-gold   { --edge: #fbbf24; --edge-dark:#b45309; --edge-light:#fde68a; }
+.rarity-silver { --edge: #cbd5e1; --edge-dark:#64748b; --edge-light:#f1f5f9; }
+.rarity-bronze { --edge: #b45309; --edge-dark:#78350f; --edge-light:#f59e0b; }
+
+/* Cara frontal con notch, borde fino y halo */
+.card3d-face {
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radius);
+    background: var(--front-bg);
+    clip-path: polygon(
+            calc(var(--cut) + 8px) 0,
+            100% 0,
+            100% 100%,
+            0 100%,
+            0 calc(var(--cut) + 8px),
+            0 0
+    );
+    transform: translateZ(calc(var(--thickness) / 2));
+    /* Borde fino perimetral (mismo color rareza) */
+    box-shadow:
+            inset 0 0 0 2px color-mix(in oklab, var(--edge) 70%, transparent),
+            0 0 0 1px rgba(0,0,0,.2);
+}
+
+/* Glint/luz que sigue al cursor */
+.card3d-glint {
+    position: absolute;
+    inset: -20%;
+    background: radial-gradient(220px 220px at var(--lx,50%) var(--ly,50%),
+    color-mix(in oklab, var(--edge-light) 55%, transparent) 0%,
+    transparent 55%);
+    pointer-events: none;
+    mix-blend-mode: screen;
+    transition: background-position .08s linear;
+}
+
+/* Lado derecho (espesor) */
+.card3d-side-right {
+    position: absolute;
+    top: 12px;
+    bottom: 12px;
+    right: -1px;
+    width: var(--thickness);
+    transform-origin: left center;
+    transform: rotateY(90deg);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    background: linear-gradient(to bottom, var(--edge-light), var(--edge-dark));
+    box-shadow: inset 2px 0 10px rgba(0,0,0,.35);
+}
+
+/* Lado inferior (espesor) */
+.card3d-side-bottom {
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    bottom: -1px;
+    height: var(--thickness);
+    transform-origin: center top;
+    transform: rotateX(-90deg);
+    border-radius: 0 0 var(--radius) var(--radius);
+    background: linear-gradient(to right, var(--edge-light), var(--edge-dark));
+    box-shadow: inset 0 2px 10px rgba(0,0,0,.35);
+}
+
+/* ==== Contenido de la cara frontal ==== */
+.face-header{
+    position: absolute;
+    top: 10px; left: 12px; right: 12px;
+    display: flex; justify-content: space-between; align-items: flex-start;
+    color: #fff;
+}
+.chip{
+    font: 700 10px/1 Inter, system-ui, sans-serif;
+    text-transform: uppercase;
+    padding: 6px 8px;
+    background: color-mix(in oklab, var(--edge) 12%, transparent);
+    border: 1px solid color-mix(in oklab, var(--edge) 35%, transparent);
+    border-radius: 6px;
+    letter-spacing: .06em;
+}
+.pts{ text-align: right; }
+.pts-num{ font: 800 22px/1 Inter, system-ui, sans-serif; }
+.pts-lab{ font: 700 10px/1 Inter, system-ui, sans-serif; opacity:.9; }
+
+/* Foto */
+.face-photo{
+    position: absolute; top: 54px; left: 0; right: 0; height: 265px;
+    display: flex; align-items: flex-end; justify-content: center;
+}
+.face-photo img{
+    max-height: 260px; width: auto; object-fit: contain;
+    filter: drop-shadow(0 22px 36px rgba(0,0,0,.5));
+}
+
+/* Stats (bajadas y alineadas a la izquierda) */
+.face-stats{
+    position: absolute; top: 340px; left: 18px; right: 18px;
+    display: flex; gap: 14px; align-items: flex-end; color:#fff;
+}
+.face-stats .stat{ min-width: 52px; }
+.face-stats .stat.nationality{ min-width: 40px; }
+.face-stats .lab{
+    font: 700 10px/1 Inter, system-ui, sans-serif;
+    letter-spacing: .06em; text-transform: uppercase; opacity:.82; margin-bottom: 4px;
+}
+.face-stats .val{
+    font: 600 13px/1.1 Inter, system-ui, sans-serif;
+}
+
+/* Footer: nombre + supply + rol */
+.face-footer{
+    position: absolute; left: 14px; right: 14px; bottom: 14px; color:#fff;
+    display: flex; align-items: flex-end; justify-content: space-between;
+}
+.player-name{
+    font-family: "League Spartan", system-ui, sans-serif;
+    font-weight: 700;
+    font-size: 28px;
+    letter-spacing: .02em;
+    line-height: 1.1;
+}
+.supply{ font: 700 11px/1 Inter, system-ui, sans-serif; opacity:.9; margin-top: 2px; }
+
+.role-pill{
+    font: 800 11px/1 Inter, system-ui, sans-serif;
+    padding: 8px 10px;
+    border-radius: 10px;
+    background: color-mix(in oklab, var(--edge) 16%, transparent);
+    border:1px solid color-mix(in oklab, var(--edge) 40%, transparent);
+    letter-spacing: .04em;
+}
+
+/* ===== Hover lift (ligero) ===== */
+.card3d-wrapper:hover .card3d-root {
+    translate: 0 -4px;
+}
