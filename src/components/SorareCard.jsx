@@ -3,6 +3,7 @@ import clsx from "clsx";
 import "@fontsource/league-spartan/700.css";
 import "@fontsource/inter/400.css";
 import "@fontsource/inter/700.css";
+import "@fontsource/londrina-shadow/400.css"; // <-- Fuente SOLO para el nombre
 
 /**
  * Cromo v4 — tilt + luz, notch esquina, grosor 3D ~5cm, borde fino por rareza
@@ -99,8 +100,11 @@ export default function SorareCard({
             />
           </div>
 
-          {/* Stats: bajadas, alineadas a la izquierda */}
-          <div className="face-stats">
+          {/* Stats: bajadas un poco más y alineadas a la izquierda */}
+          <div
+            className="face-stats"
+            style={{ marginTop: "14px" }} // <-- desplazamos un poco más hacia abajo
+          >
             <div className="stat nationality">
               <div className="lab">NAC</div>
               <div className="val">{nationality}</div>
@@ -117,7 +121,16 @@ export default function SorareCard({
           {/* Pie: nombre + valor + posición */}
           <div className="face-footer">
             <div className="name-box">
-              <div className="player-name">{name.toUpperCase()}</div>
+              <div
+                className="player-name"
+                style={{
+                  fontFamily: '"Londrina Shadow", system-ui, -apple-system, "Segoe UI", Roboto, Inter, Arial, sans-serif',
+                  fontWeight: 400,
+                  letterSpacing: "0.5px",
+                }}
+              >
+                {name.toUpperCase()}
+              </div>
               <div className="supply">{supply}/{supplyTotal}</div>
             </div>
             <div className="role-pill">{isGK ? "PORTERO" : "CAMPO"}</div>

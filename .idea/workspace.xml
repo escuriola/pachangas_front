@@ -6,9 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="9519cfb5-7d2e-4452-b01d-d032811f5eeb" name="Changes" comment="Add pages.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/PlayerCard.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/PlayerCard.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/SorareCard.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/SorareCard.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -105,22 +103,6 @@
       <workItem from="1755011343659" duration="5201000" />
       <workItem from="1761309680906" duration="4431000" />
       <workItem from="1761550021889" duration="4273000" />
-    </task>
-    <task id="LOCAL-00033" summary="Players.">
-      <option name="closed" value="true" />
-      <created>1754066379970</created>
-      <option name="number" value="00033" />
-      <option name="presentableId" value="LOCAL-00033" />
-      <option name="project" value="LOCAL" />
-      <updated>1754066379970</updated>
-    </task>
-    <task id="LOCAL-00034" summary="Players.">
-      <option name="closed" value="true" />
-      <created>1754078478680</created>
-      <option name="number" value="00034" />
-      <option name="presentableId" value="LOCAL-00034" />
-      <option name="project" value="LOCAL" />
-      <updated>1754078478680</updated>
     </task>
     <task id="LOCAL-00035" summary="Players.">
       <option name="closed" value="true" />
@@ -498,7 +480,23 @@
       <option name="project" value="LOCAL" />
       <updated>1761660580727</updated>
     </task>
-    <option name="localTasksCounter" value="82" />
+    <task id="LOCAL-00082" summary="Add pages.">
+      <option name="closed" value="true" />
+      <created>1761663028727</created>
+      <option name="number" value="00082" />
+      <option name="presentableId" value="LOCAL-00082" />
+      <option name="project" value="LOCAL" />
+      <updated>1761663028727</updated>
+    </task>
+    <task id="LOCAL-00083" summary="Add pages.">
+      <option name="closed" value="true" />
+      <created>1761664459622</created>
+      <option name="number" value="00083" />
+      <option name="presentableId" value="LOCAL-00083" />
+      <option name="project" value="LOCAL" />
+      <updated>1761664459622</updated>
+    </task>
+    <option name="localTasksCounter" value="84" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
