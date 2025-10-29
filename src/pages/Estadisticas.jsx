@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import Leaderboard from "../components/Leaderboard";
-import dummy from "../data/dummy"; // Se asume export por defecto o named { players }. Ajusta si es distinto.
+// Import robusto: admite exportaciones con nombre, por defecto, u otras variantes
+import * as dummy from "../data/dummy";
 
 /**
  * Página de Estadísticas
@@ -24,40 +25,67 @@ export default function Estadisticas() {
       ...p,
     }));
 
+  // Extrae el array base desde dummy.js independientemente de cómo exporte
+  const pickFromDummy = () => {
+    const d = dummy?.default ?? dummy;
+
+    // Casos comunes:
+    // - export const players = [...]
+    // - export default { players: [...] }
+    // - export default [...]
+    // - module que exporta varias cosas
+    if (Array.isArray(d?.players)) return d.players;
+    if (Array.isArray(d)) return d;
+    if (Array.isArray(d?.default)) return d.default;
+
+    // Buscar en cualquier propiedad que parezca lista de jugadores
+    for (const key of Object.keys(d || {})) {
+      const val = d[key];
+      if (Array.isArray(val) && val.length && typeof val[0] === "object") {
+        // heurística mínima: tiene al menos name/nombre
+        if ("name" in val[0] || "nombre" in val[0]) return val;
+      }
+    }
+    return [];
+  };
+
   useEffect(() => {
     // 1) Cargar dummy primero (base estable)
-    const base = Array.isArray(dummy?.players) ? dummy.players : Array.isArray(dummy) ? dummy : [];
-    setPlayers(normalize(base));
+    setPlayers(normalize(pickFromDummy()));
 
     // 2) Intentar API si existe (no rompe si no está)
     const tryApi = async () => {
+      const normalizeApi = (data) => {
+        const arr = Array.isArray(data?.players)
+          ? data.players
+          : Array.isArray(data)
+            ? data
+            : [];
+        return normalize(arr);
+      };
+
       try {
-        // Intenta ambas rutas comunes
-        const res = await fetch("/api/jugadores", { method: "GET" });
+        let res = await fetch("/api/jugadores", { method: "GET" });
         if (res.ok) {
           const data = await res.json();
-          if (Array.isArray(data)) {
-            setPlayers(normalize(data));
+          const arr = normalizeApi(data);
+          if (arr.length) {
+            setPlayers(arr);
             return;
           }
-          // Si viene en {players: [...]}
-          if (Array.isArray(data?.players)) {
-            setPlayers(normalize(data.players));
-            return;
-          }
-        } else {
-          // fallback a /api/players
-          const res2 = await fetch("/api/players", { method: "GET" });
-          if (res2.ok) {
-            const data2 = await res2.json();
-            const arr = Array.isArray(data2?.players) ? data2.players : Array.isArray(data2) ? data2 : [];
-            if (Array.isArray(arr)) setPlayers(normalize(arr));
-          }
+        }
+        // fallback a /api/players
+        res = await fetch("/api/players", { method: "GET" });
+        if (res.ok) {
+          const data2 = await res.json();
+          const arr2 = normalizeApi(data2);
+          if (arr2.length) setPlayers(arr2);
         }
       } catch {
         // Silencioso: nos quedamos con dummy
       }
     };
+
     tryApi();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
