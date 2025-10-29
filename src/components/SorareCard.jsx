@@ -8,7 +8,7 @@ import "@fontsource/londrina-shadow/400.css"; // Fuente para el nombre
 /**
  * Cromo v4 — tilt + luz, notch esquina, borde por rareza
  * Ajustes:
- * - Foto alta (hasta casi el nombre) y SIEMPRE ajustada con object-fit: cover
+ * - Foto alta (hasta casi el nombre)
  * - Stats más abajo, alineadas a la izquierda y minimizadas
  * - Nombre con borde del color del tipo de carta
  * - PTS con color según rareza
@@ -140,16 +140,16 @@ export default function SorareCard({
             </div>
           </div>
 
-          {/* Imagen del jugador — SIEMPRE llena el área del cromo */}
+          {/* Imagen del jugador */}
           <div
             className="face-photo"
             style={{
-              position: "relative",
               marginTop: "0",
-              marginBottom: "12px",
-              height: "360px",         // altura fija del área de foto
-              overflow: "hidden",
-              borderRadius: "12px",
+              marginBottom: "10px",
+              height: "348px", // alto de la foto
+              display: "flex",
+              alignItems: "flex-start",
+              justifyContent: "center",
             }}
           >
             <img
@@ -159,35 +159,30 @@ export default function SorareCard({
               }}
               alt={name}
               style={{
-                position: "absolute",
-                inset: 0,
-                width: "100%",
-                height: "100%",
-                objectFit: "cover",       // <-- llena sin deformar
-                objectPosition: "center top", // foco arriba (cara/pecho)
-                filter: "drop-shadow(0 12px 28px rgba(0,0,0,0.55))",
-                // Para PNGs muy recortados mantén algo de aire arriba:
-                transform: "translateZ(0)", // evita pixelación en algunos navegadores
+                maxHeight: "100%",
+                width: "auto",
+                objectFit: "contain",
+                filter: "drop-shadow(0 20px 36px rgba(0,0,0,0.65))",
               }}
             />
           </div>
 
-          {/* Stats — bajadas y compactas */}
+          {/* Stats — bajadas un poco más y más compactas */}
           <div
             className="face-stats"
             style={{
-              marginTop: "40px",
+              marginTop: "40px",      // ↓ más separación para evitar solape
               marginBottom: "6px",
-              padding: "0 6px",
+              padding: "0 6px",       // leve sangría a la izquierda
               display: "flex",
               flexWrap: "wrap",
-              gap: "6px 10px",
+              gap: "6px 10px",        // gap más compacto
               alignItems: "flex-start",
               justifyContent: "flex-start",
               textAlign: "left",
             }}
           >
-            {/* Nacionalidad */}
+            {/* Nacionalidad compacta */}
             <div
               className="stat nationality"
               style={{
@@ -219,7 +214,7 @@ export default function SorareCard({
               </div>
             </div>
 
-            {/* Otras stats */}
+            {/* Otras stats compactas */}
             {statCols.map((s) => (
               <div
                 className="stat"
@@ -232,7 +227,7 @@ export default function SorareCard({
                   borderRadius: "8px",
                   background: "rgba(255,255,255,0.03)",
                   border: "1px solid rgba(255,255,255,0.07)",
-                  minWidth: "72px",
+                  minWidth: "72px", // ↓ más estrecho para evitar 3 líneas
                 }}
               >
                 <div
