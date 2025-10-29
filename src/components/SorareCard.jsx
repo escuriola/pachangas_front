@@ -4,26 +4,32 @@ import "@fontsource/league-spartan/700.css";
 import "@fontsource/inter/400.css";
 import "@fontsource/inter/700.css";
 import "@fontsource/londrina-shadow/400.css"; // Fuente para el nombre
-import { computePlayerValue } from "../data/dummy";
+import { computePlayerValue, players as DUMMY_PLAYERS } from "../data/dummy";
 
 /**
  * Cromo v4 — tilt + luz, notch esquina, borde por rareza
- * Cambios:
- * - Muestra VAL (0–1000) en el pie. Si no llega como prop, lo calcula con computePlayerValue().
+ * Unificación del valor:
+ *  1) Si llega prop `value` => usarlo tal cual (MISMA cifra que TeamGenerator si viene de ahí).
+ *  2) Si NO llega `value`, se busca el jugador en dummy por `id` (o `name`) y se calcula con computePlayerValue
+ *     usando el registro ORIGINAL del dummy (misma fuente -> mismo resultado).
+ *  3) Como último fallback, intenta computar con las props recibidas (totalPoints + stats sueltas).
  */
 export default function SorareCard({
                                      rarity = "gold", // gold | silver | bronze
                                      photo = "/players/sample.png",
+                                     id,                      // <- AÑADIDO: id del jugador para lookup exacto en dummy
                                      name = "PLAYER",
                                      nationality = "🇪🇸",
-                                     position = "CAMPO", // "CAMPO" | "PORTERO"
+                                     position = "CAMPO",      // "CAMPO" | "PORTERO"
                                      age = "-",
-                                     totalPoints = 100, // PTS (arriba-dcha)
+                                     totalPoints = 100,       // PTS (arriba-dcha)
 
-                                     // Si no pasas 'value', el componente intentará calcularlo con los datos siguientes:
-                                     value,                            // <- valor final a mostrar (0–1000). Si no viene, se calcula.
-                                     stats,                            // <- opcional: { goals, assists, saves, cleanSheets }
-                                     goals, assists, saves, cleanSheets, // <- opcionales sueltos, por si llega desglosado
+                                     // Valor: si no llega, se resuelve con dummy y computePlayerValue
+                                     value,
+
+                                     // Stats opcionales (por si el caller ya las trae)
+                                     stats,
+                                     goals, assists, saves, cleanSheets,
 
                                      fifa = { PAS: 80, TIR: 80, REG: 80, FIS: 80, PAR: 80 },
                                      className,
@@ -32,22 +38,35 @@ export default function SorareCard({
   const cardRef = useRef(null);
   const [tilt, setTilt] = useState({ rx: 0, ry: 0, lx: 50, ly: 50 });
 
-  // ---- Fallback: calcular el valor si no llega como prop ----
-  const mergedStats = {
-    goals: Number(goals ?? stats?.goals ?? 0),
-    assists: Number(assists ?? stats?.assists ?? 0),
-    saves: Number(saves ?? stats?.saves ?? 0),
-    cleanSheets: Number(cleanSheets ?? stats?.cleanSheets ?? 0),
-  };
+  // ---------- Resolver valor UNIFICADO ----------
+  function resolveValue() {
+    // 1) Si viene value explícito => usarlo
+    if (Number.isFinite(value)) return Number(value);
 
-  const computed =
-    Number.isFinite(value)
-      ? Number(value)
-      : computePlayerValue({
-        position,
-        totalPoints: Number(totalPoints ?? 0),
-        stats: mergedStats,
-      });
+    // 2) Intentar lookup en dummy por id -> name
+    let base = null;
+    if (id != null) {
+      base = DUMMY_PLAYERS.find((p) => String(p.id) === String(id));
+    }
+    if (!base && name) {
+      base = DUMMY_PLAYERS.find((p) => String(p.name).toLowerCase() === String(name).toLowerCase());
+    }
+    if (base) {
+      // Mismo registro que usa TeamGenerator -> mismo compute
+      return computePlayerValue(base);
+    }
+
+    // 3) Fallback: computar con lo que tengamos en props (por si se usa el cromo suelto)
+    const mergedStats = {
+      goals: Number(goals ?? stats?.goals ?? 0),
+      assists: Number(assists ?? stats?.assists ?? 0),
+      saves: Number(saves ?? stats?.saves ?? 0),
+      cleanSheets: Number(cleanSheets ?? stats?.cleanSheets ?? 0),
+    };
+    return computePlayerValue({ position, totalPoints: Number(totalPoints ?? 0), stats: mergedStats });
+  }
+
+  const unifiedValue = resolveValue();
 
   const accent =
     rarity === "gold" ? "#f5c84c" : rarity === "silver" ? "#d8d8d8" : "#b87333";
@@ -211,7 +230,22 @@ export default function SorareCard({
                 {nationality}
               </div>
             </div>
-            {statCols.map((s) => (
+            {(
+              (isGK
+                ? [
+                  { key: "EDAD", val: age },
+                  { key: "PAS", val: fifa.PAS ?? "-" },
+                  { key: "PAR", val: fifa.PAR ?? "-" },
+                  { key: "FIS", val: fifa.FIS ?? "-" },
+                ]
+                : [
+                  { key: "EDAD", val: age },
+                  { key: "PAS", val: fifa.PAS ?? "-" },
+                  { key: "TIR", val: fifa.TIR ?? "-" },
+                  { key: "REG", val: fifa.REG ?? "-" },
+                  { key: "FIS", val: fifa.FIS ?? "-" },
+                ])
+            ).map((s) => (
               <div
                 className="stat"
                 key={s.key}
@@ -285,7 +319,7 @@ export default function SorareCard({
                 className="value"
                 style={{ position: "relative", fontSize: "12px", color: "rgba(255,255,255,0.85)", marginTop: "2px" }}
               >
-                VAL: <span className="font-mono">{Number.isFinite(computed) ? computed : "—"}</span>/1000
+                VAL: <span className="font-mono">{Number.isFinite(unifiedValue) ? unifiedValue : "—"}</span>/1000
               </div>
             </div>
             <div className="role-pill">{isGK ? "PORTERO" : "CAMPO"}</div>
