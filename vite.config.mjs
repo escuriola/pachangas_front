@@ -3,6 +3,8 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import path from 'path'
 
+// Usa rutas absolutas por defecto (/) para que los assets carguen en deep-links.
+// Si algún día sirves bajo subcarpeta, exporta VITE_PUBLIC_BASE='/subcarpeta/' en el build.
 export default defineConfig(({ mode }) => ({
   plugins: [react()],
   resolve: {
@@ -10,12 +12,12 @@ export default defineConfig(({ mode }) => ({
       '@': path.resolve(__dirname, './src'),
     },
   },
-  base: './', // relativo para servir desde Nginx o subcarpeta
+  base: process.env.VITE_PUBLIC_BASE?.trim() || '/',  // <-- ANTES: './'
   server: {
     port: 5173,
     proxy: {
       '/api': {
-        target: 'http://localhost:8844/web',
+        target: 'http://localhost/api',
         changeOrigin: true,
         secure: false,
       },
@@ -24,5 +26,6 @@ export default defineConfig(({ mode }) => ({
   build: {
     outDir: 'dist',
     emptyOutDir: true,
+    sourcemap: false,
   },
 }))

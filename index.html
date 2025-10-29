@@ -1,13 +1,16 @@
 <!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MisterIA</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" href="/favicon.ico" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Fuerza resolución de rutas desde la raíz del dominio -->
+  <base href="/" />
+  <title>Pachangas</title>
+</head>
+<body>
+<div id="root"></div>
+<!-- Mantén ruta absoluta para que funcione también en deep-links -->
+<script type="module" src="/src/main.jsx"></script>
+</body>
 </html>
