@@ -35,17 +35,6 @@ function Home() {
             >
               {/* Contenedor “glass” para el cromo; PlayerCard renderiza el cromo dentro */}
               <PlayerCard player={p} />
-              <div className="mt-3 flex items-center justify-between text-xs text-white/60">
-                <span className="rounded-md bg-white/5 px-2 py-0.5 ring-1 ring-white/10">
-                  {p.position === "PORTERO" ? "Portero" : "Jugador"}
-                </span>
-                <Link
-                  to={`/players/${p.id}`}
-                  className="text-white/80 hover:text-white transition"
-                >
-                  Ver perfil →
-                </Link>
-              </div>
             </div>
           ))}
         </div>

@@ -319,7 +319,7 @@ export default function SorareCard({
                 className="value"
                 style={{ position: "relative", fontSize: "12px", color: "rgba(255,255,255,0.85)", marginTop: "2px" }}
               >
-                VAL: <span className="font-mono">{Number.isFinite(unifiedValue) ? unifiedValue : "—"}</span>/1000
+                <span className="font-mono">{Number.isFinite(unifiedValue) ? unifiedValue : "—"}</span>/1000
               </div>
             </div>
             <div className="role-pill">{isGK ? "PORTERO" : "CAMPO"}</div>
