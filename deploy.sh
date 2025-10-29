@@ -62,9 +62,10 @@ docker rm -f "${NAME}" >/dev/null 2>&1 || true
 docker run -d --name "${NAME}" --restart unless-stopped \
   --network proxy \
   --label "traefik.enable=true" \
+  --label "traefik.http.routers.app.rule=Host(`pachangas.escuriola.com`)"
+  --label "traefik.http.routers.app.entrypoints=websecure"
   --label "traefik.http.routers.${NAME}.rule=Host(\`${SUBDOMAIN}\`) && PathPrefix(\`/\`) && !PathPrefix(\`/api\`)" \
   --label "traefik.http.routers.${NAME}.entrypoints=websecure" \
-  --label "traefik.http.routers.${NAME}.tls.certresolver=le" \
   --label "traefik.http.routers.${NAME}.priority=1" \
   --label "traefik.http.services.${NAME}.loadbalancer.server.port=80" \
   "${FULL_IMAGE}" >/dev/null
