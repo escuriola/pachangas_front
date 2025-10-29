@@ -20,7 +20,7 @@ function Home() {
         <div className="mx-auto max-w-6xl px-4 pt-8 pb-3 relative z-10">
           <h1 className="text-2xl font-semibold">Jugadores (Hombres blandengues)</h1>
           <p className="mt-1 text-sm text-white/70">
-            Haz clic en un cromo para ver estadísticas e histórico.
+            Haz clic en un cromo para ver estadísticas e histórico. Tambiñen puedes generar equipos aleatorios.k
           </p>
         </div>
       </section>
