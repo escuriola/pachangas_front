@@ -4,6 +4,7 @@ import PlayerStatsPage from "./pages/PlayerStatsPage";
 import MatchesListPage from "./pages/MatchesListPage";
 import MatchDetailPage from "./pages/MatchDetailPage";
 import LeaderboardPage from "./pages/LeaderboardPage";
+import TeamGenerator from "./pages/TeamGenerator";
 import PlayerCard from "./components/PlayerCard";
 import { players } from "./data/dummy";
 import AppHeader from "./components/AppHeader";
@@ -61,7 +62,8 @@ export default function App() {
         <Route path="/players/:id" element={<PlayerStatsPage />} />
         <Route path="/matches" element={<MatchesListPage />} />
         <Route path="/matches/:id" element={<MatchDetailPage />} />
-        <Route path="/estadisticas" element={<LeaderboardPage />} />
+        <Route path="/leaderboard" element={<LeaderboardPage />} />
+        <Route path="/team-generator" element={<TeamGenerator />} />
       </Routes>
     </BrowserRouter>
   );

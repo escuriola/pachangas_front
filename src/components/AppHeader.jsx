@@ -19,6 +19,9 @@ export default function AppHeader() {
           <Link to="/leaderboard" className={`rounded-lg px-3 py-1 ${isActive("/leaderboard")}`}>
             Estadísticas
           </Link>
+          <Link to="/team-generator" className={`rounded-lg px-3 py-1 ${isActive("/team-generator")}`}>
+            Generador
+          </Link>
         </nav>
       </div>
     </header>

@@ -21,13 +21,10 @@ export default function Leaderboard({
   const getMetric = (p) =>
     typeof metricKey === "function"
       ? Number(metricKey(p) || 0)
-      : Number((p?.[metricKey] ?? 0));
+      : Number(p?.[metricKey] ?? 0);
 
   const rows = (players || [])
-    .map((p) => ({
-      ...p,
-      _metric: getMetric(p),
-    }))
+    .map((p) => ({ ...p, _metric: getMetric(p) }))
     .filter((p) => Number.isFinite(p._metric))
     .sort((a, b) => b._metric - a._metric)
     .slice(0, maxItems);
@@ -41,14 +38,13 @@ export default function Leaderboard({
           <tr className="text-left text-gray-300 border-b border-white/10">
             <th className="py-2 pr-3 w-12">#</th>
             <th className="py-2 pr-3">Jugador</th>
-            <th className="py-2 pr-3">Equipo</th>
             <th className="py-2 pr-0 text-right">{metricLabel}</th>
           </tr>
           </thead>
           <tbody>
           {rows.length === 0 && (
             <tr>
-              <td className="py-3" colSpan={4}>
+              <td className="py-3" colSpan={3}>
                 No hay datos disponibles.
               </td>
             </tr>
@@ -60,7 +56,6 @@ export default function Leaderboard({
             >
               <td className="py-2 pr-3 font-mono">{idx + 1}</td>
               <td className="py-2 pr-3 font-medium">{p.name ?? "—"}</td>
-              <td className="py-2 pr-3 text-gray-300">{p.team ?? "—"}</td>
               <td className="py-2 pr-0 text-right font-semibold">{p._metric}</td>
             </tr>
           ))}

@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import AppHeader from "../components/AppHeader";
 import Leaderboard from "../components/Leaderboard";
-// Cargamos los datos reales del dummy
 import * as dummy from "../data/dummy";
 
 /**
@@ -16,8 +15,7 @@ export default function LeaderboardPage() {
   const pickPlayersFromDummy = () => {
     const mod = dummy?.default ?? dummy;
     if (Array.isArray(mod?.players)) return mod.players;
-    if (Array.isArray(mod)) return mod; // por si exports default []
-    // heurística secundaria
+    if (Array.isArray(mod)) return mod; // por si export default []
     for (const k of Object.keys(mod || {})) {
       const v = mod[k];
       if (Array.isArray(v) && v.length && typeof v[0] === "object" && ("name" in v[0] || "nombre" in v[0])) {
@@ -34,20 +32,12 @@ export default function LeaderboardPage() {
       return {
         id: p.id ?? p.uuid ?? String(i),
         name: p.name ?? p.player ?? p.nombre ?? "Jugador",
-        team: p.team ?? p.equipo ?? p.lastTeam ?? "—",
-        goals: Number(
-          p.goals ?? p.goles ?? stats.goals ?? stats.g ?? 0
-        ),
-        assists: Number(
-          p.assists ?? p.asistencias ?? stats.assists ?? stats.a ?? 0
-        ),
-        saves: Number(
-          p.saves ?? p.paradas ?? stats.saves ?? stats.paradas ?? 0
-        ),
+        goals: Number(p.goals ?? p.goles ?? stats.goals ?? stats.g ?? 0),
+        assists: Number(p.assists ?? p.asistencias ?? stats.assists ?? stats.a ?? 0),
+        saves: Number(p.saves ?? p.paradas ?? stats.saves ?? stats.paradas ?? 0),
         matches: Number(
           p.matches ?? p.partidos ?? p.partidos_jugados ?? p.matchesPlayed ?? stats.matches ?? 0
         ),
-        // Conservamos el resto por si hace falta más info en el futuro
         ...p,
       };
     });
@@ -76,27 +66,12 @@ export default function LeaderboardPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Filtros simples: equipo + búsqueda
-  const [teamFilter, setTeamFilter] = useState("all");
+  // Sólo búsqueda por nombre (sin filtro por equipo)
   const [search, setSearch] = useState("");
-
-  const teams = useMemo(() => {
-    const s = new Set();
-    players.forEach((p) => p.team && s.add(p.team));
-    return ["all", ...Array.from(s).sort()];
-  }, [players]);
-
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
-    return players.filter((p) => {
-      const tOk = teamFilter === "all" || p.team === teamFilter;
-      const sOk =
-        !q ||
-        (p.name && p.name.toLowerCase().includes(q)) ||
-        (p.team && p.team.toLowerCase().includes(q));
-      return tOk && sOk;
-    });
-  }, [players, teamFilter, search]);
+    return players.filter((p) => !q || (p.name && p.name.toLowerCase().includes(q)));
+  }, [players, search]);
 
   return (
     <div className="min-h-screen bg-slate-950 text-white">
@@ -108,38 +83,22 @@ export default function LeaderboardPage() {
         <div className="mx-auto max-w-6xl px-4 pt-8 pb-2">
           <h1 className="text-2xl font-semibold">Estadísticas</h1>
           <p className="mt-1 text-sm text-white/70">
-            Clasificaciones generadas desde los datos reales del equipo (dummy.js o API).
+            Clasificaciones generadas desde los datos reales (dummy.js o API).
           </p>
         </div>
       </div>
 
-      {/* Controles */}
+      {/* Controles (sólo búsqueda) */}
       <section className="mx-auto max-w-6xl px-4 pb-4 pt-4">
-        <div className="mb-4 flex flex-col gap-3 md:flex-row">
-          <div className="flex-1">
-            <label className="block text-sm text-white/70 mb-1">Buscar</label>
-            <input
-              type="text"
-              placeholder="Nombre o equipo…"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2 outline-none"
-            />
-          </div>
-          <div className="md:w-64">
-            <label className="block text-sm text-white/70 mb-1">Equipo</label>
-            <select
-              value={teamFilter}
-              onChange={(e) => setTeamFilter(e.target.value)}
-              className="w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2 outline-none"
-            >
-              {teams.map((t) => (
-                <option key={t} value={t}>
-                  {t === "all" ? "Todos" : t}
-                </option>
-              ))}
-            </select>
-          </div>
+        <div className="mb-4">
+          <label className="block text-sm text-white/70 mb-1">Buscar</label>
+          <input
+            type="text"
+            placeholder="Nombre…"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2 outline-none"
+          />
         </div>
       </section>
 
