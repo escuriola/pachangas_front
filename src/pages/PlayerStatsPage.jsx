@@ -1,5 +1,5 @@
 import React from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useLocation, useNavigate } from "react-router-dom";
 import { players, playerHistories } from "../data/dummy";
 import SorareCard from "../components/SorareCard";
 
@@ -15,6 +15,9 @@ function StatBadge({ label, value, hint }) {
 
 export default function PlayerStatsPage() {
   const { id } = useParams();
+  const location = useLocation();
+  const navigate = useNavigate();
+
   const player = players.find((p) => String(p.id) === String(id)) || players[0];
   const history = playerHistories[player.id] || [];
 
@@ -42,6 +45,17 @@ export default function PlayerStatsPage() {
     className: "mx-auto",
   };
 
+  // Back que respeta la navegación real; si no hay historial, cae a "/" (o lo que prefieras)
+  const handleBack = () => {
+    if (window.history.length > 1) {
+      navigate(-1);
+    } else {
+      // Fallback si entraron directo por URL
+      const fallback = (location.state && location.state.from) || "/";
+      navigate(fallback, { replace: true });
+    }
+  };
+
   return (
     <div className="min-h-screen bg-slate-950 text-white">
       {/* Header */}
@@ -53,6 +67,7 @@ export default function PlayerStatsPage() {
           <nav className="flex items-center gap-3 text-sm">
             <Link
               to="/matches"
+              state={{ from: location.pathname }}
               className="rounded-lg px-3 py-1 hover:bg-white/5 transition"
             >
               Partidos
@@ -119,6 +134,7 @@ export default function PlayerStatsPage() {
                     <Link
                       key={h.matchId}
                       to={`/matches/${h.matchId}`}
+                      state={{ from: location.pathname }}  // <- recuerda desde dónde llegaste
                       className="flex items-center justify-between py-3 hover:bg-white/5 rounded-lg px-2 -mx-2 transition"
                     >
                       <div>
@@ -140,14 +156,14 @@ export default function PlayerStatsPage() {
               </div>
             </section>
 
-            {/* CTA volver */}
+            {/* CTA volver: vuelve a la página exacta anterior */}
             <div>
-              <Link
-                to="/matches"
+              <button
+                onClick={handleBack}
                 className="inline-flex items-center gap-2 rounded-xl bg-white/5 px-3 py-2 text-sm ring-1 ring-white/10 hover:bg-white/10 transition"
               >
-                ← Volver a partidos
-              </Link>
+                ← Volver
+              </button>
             </div>
           </div>
         </div>

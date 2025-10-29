@@ -1,5 +1,5 @@
 import React from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useLocation, useNavigate } from "react-router-dom";
 import { matches } from "../data/dummy";
 
 function parseScore(score) {
@@ -33,16 +33,28 @@ function EventRow({ e }) {
 
 export default function MatchDetailPage() {
   const { id } = useParams();
+  const location = useLocation();
+  const navigate = useNavigate();
+
   const match = matches.find((m) => String(m.id) === String(id)) || matches[0];
   const { h, a } = parseScore(match.score);
 
-  // tint según resultado
   let headerTint = "from-slate-800/60 to-slate-900/60 ring-white/10";
   if (h != null && a != null) {
     if (h > a) headerTint = "from-emerald-600/25 to-emerald-700/20 ring-emerald-400/30";
     else if (h < a) headerTint = "from-rose-600/25 to-rose-700/20 ring-rose-400/30";
     else headerTint = "from-amber-600/25 to-amber-700/20 ring-amber-400/30";
   }
+
+  const handleBack = () => {
+    if (window.history.length > 1) {
+      navigate(-1);
+    } else {
+      // Fallback: vuelve a donde te dijeron en state.from, o a /matches si entraste directo
+      const fallback = (location.state && location.state.from) || "/matches";
+      navigate(fallback, { replace: true });
+    }
+  };
 
   return (
     <div className="min-h-screen bg-slate-950 text-white">
@@ -53,7 +65,7 @@ export default function MatchDetailPage() {
             Pachangas
           </Link>
           <nav className="flex items-center gap-3 text-sm">
-            <Link to="/matches" className="rounded-lg px-3 py-1 hover:bg-white/5">
+            <Link to="/matches" state={{ from: location.pathname }} className="rounded-lg px-3 py-1 hover:bg-white/5">
               Todos los partidos
             </Link>
           </nav>
@@ -145,14 +157,14 @@ export default function MatchDetailPage() {
           <p className="mt-2 whitespace-pre-line text-white/85">{match.report}</p>
         </section>
 
-        {/* CTA volver */}
+        {/* CTA volver: regresa al origen real */}
         <div className="pt-2">
-          <Link
-            to="/matches"
+          <button
+            onClick={handleBack}
             className="inline-flex items-center gap-2 rounded-xl bg-white/5 px-3 py-2 text-sm ring-1 ring-white/10 hover:bg-white/10"
           >
-            ← Volver a partidos
-          </Link>
+            ← Volver
+          </button>
         </div>
       </main>
     </div>

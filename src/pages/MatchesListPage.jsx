@@ -1,9 +1,8 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { matches } from "../data/dummy";
 
 function parseScore(score) {
-  // score esperado "2-1" o "—"
   const parts = String(score || "").split("-");
   const h = Number(parts[0]);
   const a = Number(parts[1]);
@@ -12,6 +11,8 @@ function parseScore(score) {
 }
 
 export default function MatchesListPage() {
+  const location = useLocation();
+
   return (
     <div className="min-h-screen bg-slate-950 text-white">
       {/* Header */}
@@ -44,7 +45,6 @@ export default function MatchesListPage() {
         <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
           {matches.map((m) => {
             const { h, a } = parseScore(m.score);
-            // color del resultado (si hay marcador)
             let resultTint = "from-slate-700/30 to-slate-800/30 ring-white/10";
             if (h != null && a != null) {
               if (h > a) resultTint = "from-emerald-500/15 to-emerald-400/10 ring-emerald-400/25";
@@ -55,26 +55,23 @@ export default function MatchesListPage() {
               <Link
                 key={m.id}
                 to={`/matches/${m.id}`}
+                state={{ from: location.pathname }}  // <- recuerda que venías de /matches
                 className={[
                   "group relative rounded-2xl ring-1 p-4 transition-all",
                   "bg-gradient-to-br", resultTint,
                   "hover:-translate-y-0.5 hover:shadow-xl hover:shadow-black/30"
                 ].join(" ")}
               >
-                {/* brillo sutil */}
                 <div className="pointer-events-none absolute inset-0 rounded-2xl opacity-0 transition-opacity duration-300 group-hover:opacity-100 bg-[radial-gradient(40%_60%_at_20%_0%,rgba(255,255,255,0.12),transparent_60%)]" />
                 <div className="relative z-10">
-                  {/* Fecha */}
                   <div className="text-xs text-white/70">
                     <span className="rounded-md bg-white/5 px-2 py-0.5 ring-1 ring-white/10">
                       {m.date}
                     </span>
                   </div>
 
-                  {/* Equipos + Resultado */}
                   <div className="mt-3 flex items-center justify-between gap-3">
                     <div className="flex min-w-0 items-center gap-3">
-                      {/* Escudo home */}
                       <div className="grid h-10 w-10 place-items-center rounded-full bg-white/10 ring-1 ring-white/15">
                         <span className="text-xs">🏟️</span>
                       </div>
@@ -89,7 +86,6 @@ export default function MatchesListPage() {
                     </div>
 
                     <div className="flex min-w-0 items-center gap-3">
-                      {/* Escudo away */}
                       <div className="grid h-10 w-10 place-items-center rounded-full bg-white/10 ring-1 ring-white/15">
                         <span className="text-xs">🧳</span>
                       </div>
@@ -100,7 +96,6 @@ export default function MatchesListPage() {
                     </div>
                   </div>
 
-                  {/* CTA */}
                   <div className="mt-4 flex items-center justify-between">
                     <div className="text-xs text-white/60">
                       {h != null && a != null ? "Finalizado" : "Programado"}
