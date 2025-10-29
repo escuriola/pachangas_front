@@ -35,20 +35,26 @@ echo "🌱 Lanzando canary ${CANARY} en :${CANARY_PORT}…"
 docker rm -f "${CANARY}" >/dev/null 2>&1 || true
 docker run -d --name "${CANARY}" -p "${CANARY_PORT}:80" "${FULL_IMAGE}" >/dev/null
 
-# Health-check canary
-echo -n "🩺 Comprobando salud del canary"
+HEALTH_URLS=("http://127.0.0.1:${CANARY_PORT}/" \
+             "http://127.0.0.1:${CANARY_PORT}/players/1" \
+             "http://127.0.0.1:${CANARY_PORT}/matches/m1")
+
 TRIES=60
-until curl -fsS "${HEALTH_URL}" >/dev/null 2>&1; do
-  TRIES=$((TRIES-1))
-  if [ $TRIES -le 0 ]; then
-    echo -e "\n❌ Canary no está sano. Abortando despliegue."
-    docker logs --tail=100 "${CANARY}" || true
-    exit 1
-  fi
-  echo -n "."
-  sleep 1
+for URL in "${HEALTH_URLS[@]}"; do
+  echo -n "🩺 Comprobando ${URL}"
+  T=$TRIES
+  until curl -fsS "$URL" >/dev/null 2>&1; do
+    T=$((T-1))
+    if [ $T -le 0 ]; then
+      echo -e "\n❌ Canary no está sano en ${URL}. Abortando."
+      docker logs --tail=200 "${CANARY}" || true
+      exit 1
+    fi
+    echo -n "."
+    sleep 1
+  done
+  echo " OK"
 done
-echo -e "\n✅ Canary OK."
 
 # Lanza el contenedor de producción: SIN publicar puertos, con labels Traefik
 echo "🚀 Levantando ${NAME} detrás de Traefik para ${SUBDOMAIN}…"
