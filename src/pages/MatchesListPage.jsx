@@ -1,6 +1,7 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { matches } from "../data/dummy";
+import AppHeader from "../components/AppHeader";
 
 function parseScore(score) {
   const parts = String(score || "").split("-");
@@ -15,19 +16,7 @@ export default function MatchesListPage() {
 
   return (
     <div className="min-h-screen bg-slate-950 text-white">
-      {/* Header */}
-      <header className="sticky top-0 z-20 border-b border-white/10 bg-slate-950/70 backdrop-blur">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
-          <Link to="/" className="text-lg font-semibold tracking-wide">
-            Pachangas
-          </Link>
-          <nav className="hidden items-center gap-3 text-sm md:flex">
-            <Link to="/matches" className="rounded-lg px-3 py-1 hover:bg-white/5">
-              Partidos
-            </Link>
-          </nav>
-        </div>
-      </header>
+      <AppHeader />
 
       {/* Hero */}
       <div className="relative">
@@ -55,7 +44,7 @@ export default function MatchesListPage() {
               <Link
                 key={m.id}
                 to={`/matches/${m.id}`}
-                state={{ from: location.pathname }}  // <- recuerda que venías de /matches
+                state={{ from: location.pathname }}
                 className={[
                   "group relative rounded-2xl ring-1 p-4 transition-all",
                   "bg-gradient-to-br", resultTint,
