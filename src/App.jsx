@@ -6,26 +6,12 @@ import MatchDetailPage from "./pages/MatchDetailPage";
 import LeaderboardPage from "./pages/LeaderboardPage";
 import PlayerCard from "./components/PlayerCard";
 import { players } from "./data/dummy";
+import AppHeader from "./components/AppHeader";
 
 function Home() {
   return (
     <div className="min-h-screen bg-slate-950 text-white">
-      {/* Header oscuro */}
-      <header className="sticky top-0 z-20 border-b border-white/10 bg-slate-950/70 backdrop-blur">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
-          <Link to="/" className="text-lg font-semibold tracking-wide">
-            Pachangas
-          </Link>
-          <nav className="flex items-center gap-3 text-sm">
-            <Link to="/matches" className="rounded-lg px-3 py-1 hover:bg-white/5 transition">
-              Partidos
-            </Link>
-            <Link to="/estadisticas" className="rounded-lg px-3 py-1 hover:bg-white/5 transition">
-              Estadísticas
-            </Link>
-          </nav>
-        </div>
-      </header>
+      <AppHeader />
 
       {/* Hero sutil */}
       <section className="relative">
