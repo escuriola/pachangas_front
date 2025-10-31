@@ -7,7 +7,7 @@ import "@fontsource/londrina-shadow/400.css";
 import { computePlayerValue, players as DUMMY_PLAYERS } from "../data/dummy";
 
 /**
- * Cromo v4.2 — bandera pequeña junto al nombre + chips ATA/DEF
+ * Cromo v4.3 — pie fijo abajo, stats máx 2 líneas, bandera mini
  */
 export default function SorareCard({
                                      rarity = "gold",
@@ -53,47 +53,50 @@ export default function SorareCard({
       rarity === "silver" ? "rgba(216,216,216,0.18)" : "rgba(184,115,51,0.18)";
 
   // Derivados
-  const g = Number(goals ?? stats?.goals ?? 0);
-  const a = Number(assists ?? stats?.assists ?? 0);
+  const g  = Number(goals ?? stats?.goals ?? 0);
+  const a  = Number(assists ?? stats?.assists ?? 0);
   const sv = Number(saves ?? stats?.saves ?? 0);
   const cs = Number(cleanSheets ?? stats?.cleanSheets ?? 0);
 
-  // ATA/DEF (si no llegan, se estiman a partir de TIR/REG/PAS/FIS)
+  // ATA/DEF (si no llegan, estimación suave)
   const ATA_val = Number.isFinite(fifa.ATA)
     ? fifa.ATA
     : Math.round(((fifa.TIR ?? 0) * 0.5 + (fifa.REG ?? 0) * 0.3 + (fifa.PAS ?? 0) * 0.2));
   const DEF_val = Number.isFinite(fifa.DEF)
     ? fifa.DEF
-    : Math.round(((fifa.FIS ?? 0) * 0.7 + (Math.min(cs, 10) * 3))); // peso físico + bonus por clean sheets
+    : Math.round(((fifa.FIS ?? 0) * 0.7 + Math.min(cs, 10) * 3));
 
   // UI helpers
-  const StatChip = ({ label, value, minWidth = 66 }) => (
+  const StatChip = ({ label, value, minWidth = 58 }) => (
     <div
       className="stat-chip"
       style={{
         display: "flex",
         alignItems: "center",
         gap: 6,
-        padding: "4px 6px",
+        padding: "3px 6px",
         borderRadius: 8,
         background: "rgba(255,255,255,0.03)",
         border: "1px solid rgba(255,255,255,0.07)",
         minWidth,
+        height: 24, // altura contenida para calcular dos filas
       }}
     >
       <div
         className="lab"
         style={{
           fontSize: 9,
-          letterSpacing: "0.4px",
+          letterSpacing: "0.35px",
           textTransform: "uppercase",
           color: "rgba(255,255,255,0.55)",
-          minWidth: 28,
+          minWidth: 24,
         }}
       >
         {label}
       </div>
-      <div className="val" style={{ fontSize: 12, fontWeight: 700, color: "#fff" }}>{value}</div>
+      <div className="val" style={{ fontSize: 12, fontWeight: 700, color: "#fff", lineHeight: 1 }}>
+        {value}
+      </div>
     </div>
   );
 
@@ -110,21 +113,25 @@ export default function SorareCard({
   }
   function onLeave() { setTilt({ rx: 0, ry: 0, lx: 50, ly: 50 }); }
 
-  // Listado de chips según rol
-  const chips = isGK
-    ? [
-      { k: "PAR", v: fifa.PAR ?? "-" },
-      { k: "PAS", v: fifa.PAS ?? "-" },
-      { k: "FIS", v: fifa.FIS ?? "-" },
-    ]
-    : [
-      { k: "ATA", v: ATA_val },
-      { k: "DEF", v: DEF_val },
-      { k: "PAS", v: fifa.PAS ?? "-" },
-      { k: "TIR", v: fifa.TIR ?? "-" },
-      { k: "REG", v: fifa.REG ?? "-" },
-      { k: "FIS", v: fifa.FIS ?? "-" },
-    ];
+  // Chips por rol (orden optimizado para caber en 2 líneas)
+  const fieldChips = [
+    { k: "ATA", v: ATA_val },
+    { k: "DEF", v: DEF_val },
+    { k: "PAS", v: fifa.PAS ?? "-" },
+    { k: "TIR", v: fifa.TIR ?? "-" },
+    { k: "REG", v: fifa.REG ?? "-" },
+    { k: "FIS", v: fifa.FIS ?? "-" },
+  ];
+  const gkChips = [
+    { k: "PAR", v: fifa.PAR ?? "-" },
+    { k: "PAS", v: fifa.PAS ?? "-" },
+    { k: "FIS", v: fifa.FIS ?? "-" },
+  ];
+
+  // Limitar a 2 líneas: edad + (hasta 6 chips más suele caber en 2 filas en 340–380px)
+  // Si tu carta es más estrecha, baja este límite a 5.
+  const MAX_CHIPS = isGK ? 4 : 6; // además de EDAD
+  const chips = (isGK ? gkChips : fieldChips).slice(0, MAX_CHIPS);
 
   return (
     <div className={clsx("card3d-wrapper", className)} onMouseMove={onMove} onMouseLeave={onLeave}>
@@ -141,7 +148,8 @@ export default function SorareCard({
           "--ly": `${tilt.ly}%`,
         }}
       >
-        <div className="card3d-face">
+        {/* Cara como columna para fijar el pie abajo */}
+        <div className="card3d-face" style={{ display: "flex", flexDirection: "column", height: "100%" }}>
           <div className="card3d-glint" />
 
           {/* Cabecera */}
@@ -171,13 +179,19 @@ export default function SorareCard({
             </div>
           </div>
 
-          {/* Imagen del jugador */}
+          {/* Foto (toma el espacio flexible) */}
           <div
             className="face-photo"
             style={{
-              marginTop: 0, marginBottom: 10,
-              height: 348, display: "flex",
-              alignItems: "flex-start", justifyContent: "center",
+              flex: "1 1 auto",
+              minHeight: 260,
+              maxHeight: 340,
+              marginTop: 0,
+              marginBottom: 8,
+              display: "flex",
+              alignItems: "flex-start",
+              justifyContent: "center",
+              overflow: "hidden",
             }}
           >
             <img
@@ -191,33 +205,29 @@ export default function SorareCard({
             />
           </div>
 
-          {/* Stats (chips, sin grupos) */}
+          {/* Stats (máximo 2 líneas) */}
           <div
             className="face-stats"
             style={{
-              marginTop: 22,      // más alto para no empujar al pie
-              marginBottom: 14,   // deja aire antes del pie
               padding: "0 6px",
               display: "flex",
               flexWrap: "wrap",
-              gap: "6px 10px",
+              gap: "6px 8px",
               alignItems: "flex-start",
-              justifyContent: "flex-start",
-              textAlign: "left",
+              maxHeight: 60,   // ≈ 2 filas (24px altura chip + 6px gap)
+              overflow: "hidden",
             }}
           >
-            {/* Edad al inicio */}
             <StatChip label="EDAD" value={age} />
-            {/* Chips por rol */}
             {chips.map((s) => (
               <StatChip key={s.k} label={s.k} value={s.v} />
             ))}
           </div>
 
-          {/* Pie: nombre + bandera + VAL + posición */}
-          <div className="face-footer" style={{ marginTop: 6, position: "relative", zIndex: 3 }}>
+          {/* Pie fijo abajo */}
+          <div className="face-footer" style={{ marginTop: "auto", position: "relative", zIndex: 3, paddingTop: 6 }}>
             <div className="name-box" style={{ position: "relative" }}>
-              {/* faja translúcida detrás del nombre (más baja para evitar solape visual) */}
+              {/* Faja sutil detrás del nombre */}
               <div
                 aria-hidden="true"
                 style={{
@@ -225,7 +235,7 @@ export default function SorareCard({
                   left: "-6px",
                   right: "8px",
                   top: 2,
-                  height: 42,
+                  height: 38,
                   borderRadius: 10,
                   background:
                     "linear-gradient(90deg, rgba(255,255,255,0.12), rgba(255,255,255,0.06) 55%, rgba(255,255,255,0) 100%)",
@@ -238,7 +248,7 @@ export default function SorareCard({
                   position: "relative",
                   display: "flex",
                   alignItems: "baseline",
-                  gap: 8,
+                  gap: 6,
                 }}
               >
                 <div
@@ -248,11 +258,11 @@ export default function SorareCard({
                       '"Londrina Shadow", system-ui, -apple-system, "Segoe UI", Roboto, Inter, Arial, sans-serif',
                     fontWeight: 400,
                     letterSpacing: "0.8px",
-                    fontSize: 38,
-                    lineHeight: 1.1,
+                    fontSize: 36,
+                    lineHeight: 1.05,
                     color: "#ffffff",
-                    WebkitTextStroke: `1.05px ${accent}`,
-                    textShadow: `0 0 12px ${accent}80, 0 0 22px ${accent}60, 0 2px 4px rgba(0,0,0,0.9)`,
+                    WebkitTextStroke: `1px ${accent}`,
+                    textShadow: `0 0 10px ${accent}70, 0 2px 4px rgba(0,0,0,0.9)`,
                     whiteSpace: "nowrap",
                     overflow: "hidden",
                     textOverflow: "ellipsis",
@@ -263,11 +273,11 @@ export default function SorareCard({
                   {name.toUpperCase()}
                 </div>
 
-                {/* Bandera (más pequeña) */}
+                {/* Bandera aún más pequeña */}
                 <div
                   className="player-flag"
                   style={{
-                    fontSize: 16,
+                    fontSize: 12,
                     lineHeight: 1,
                     filter: "drop-shadow(0 1px 1px rgba(0,0,0,0.6))",
                     transform: "translateY(1px)",
@@ -281,15 +291,27 @@ export default function SorareCard({
                 </div>
               </div>
 
-              {/* VALOR (0–1000) */}
+              {/* VALOR (0–1000) + rol */}
               <div
-                className="value"
-                style={{ position: "relative", fontSize: 12, color: "rgba(255,255,255,0.85)", marginTop: 2 }}
+                className="value-row"
+                style={{
+                  position: "relative",
+                  marginTop: 2,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  gap: 8,
+                }}
               >
-                <span className="font-mono">{Number.isFinite(unifiedValue) ? unifiedValue : "—"}</span>/1000
+                <div
+                  className="value"
+                  style={{ fontSize: 12, color: "rgba(255,255,255,0.85)" }}
+                >
+                  <span className="font-mono">{Number.isFinite(unifiedValue) ? unifiedValue : "—"}</span>/1000
+                </div>
+                <div className="role-pill">{isGK ? "PORTERO" : "CAMPO"}</div>
               </div>
             </div>
-            <div className="role-pill">{isGK ? "PORTERO" : "CAMPO"}</div>
           </div>
         </div>
 
