@@ -7,7 +7,7 @@ import "@fontsource/londrina-shadow/400.css"; // Fuente para el nombre
 import { computePlayerValue, players as DUMMY_PLAYERS } from "../data/dummy";
 
 /**
- * Cromo v4 — tilt + luz, notch esquina, borde por rareza
+ * Cromo v4.1 — bandera junto al nombre + grupos Ataque/Defensa
  * Unificación del valor:
  *  1) Si llega prop `value` => usarlo tal cual (MISMA cifra que TeamGenerator si viene de ahí).
  *  2) Si NO llega `value`, se busca el jugador en dummy por `id` (o `name`) y se calcula con computePlayerValue
@@ -17,7 +17,7 @@ import { computePlayerValue, players as DUMMY_PLAYERS } from "../data/dummy";
 export default function SorareCard({
                                      rarity = "gold", // gold | silver | bronze
                                      photo = "/players/sample.png",
-                                     id,                      // <- AÑADIDO: id del jugador para lookup exacto en dummy
+                                     id,                      // <- id del jugador para lookup exacto en dummy
                                      name = "PLAYER",
                                      nationality = "🇪🇸",
                                      position = "CAMPO",      // "CAMPO" | "PORTERO"
@@ -49,7 +49,9 @@ export default function SorareCard({
       base = DUMMY_PLAYERS.find((p) => String(p.id) === String(id));
     }
     if (!base && name) {
-      base = DUMMY_PLAYERS.find((p) => String(p.name).toLowerCase() === String(name).toLowerCase());
+      base = DUMMY_PLAYERS.find(
+        (p) => String(p.name).toLowerCase() === String(name).toLowerCase()
+      );
     }
     if (base) {
       // Mismo registro que usa TeamGenerator -> mismo compute
@@ -63,13 +65,21 @@ export default function SorareCard({
       saves: Number(saves ?? stats?.saves ?? 0),
       cleanSheets: Number(cleanSheets ?? stats?.cleanSheets ?? 0),
     };
-    return computePlayerValue({ position, totalPoints: Number(totalPoints ?? 0), stats: mergedStats });
+    return computePlayerValue({
+      position,
+      totalPoints: Number(totalPoints ?? 0),
+      stats: mergedStats,
+    });
   }
 
   const unifiedValue = resolveValue();
 
   const accent =
-    rarity === "gold" ? "#f5c84c" : rarity === "silver" ? "#d8d8d8" : "#b87333";
+    rarity === "gold"
+      ? "#f5c84c"
+      : rarity === "silver"
+        ? "#d8d8d8"
+        : "#b87333";
 
   const accentSoft =
     rarity === "gold"
@@ -78,20 +88,82 @@ export default function SorareCard({
         ? "rgba(216,216,216,0.18)"
         : "rgba(184,115,51,0.18)";
 
-  const statCols = isGK
-    ? [
-      { key: "EDAD", val: age },
-      { key: "PAS", val: fifa.PAS ?? "-" },
-      { key: "PAR", val: fifa.PAR ?? "-" },
-      { key: "FIS", val: fifa.FIS ?? "-" },
-    ]
-    : [
-      { key: "EDAD", val: age },
-      { key: "PAS", val: fifa.PAS ?? "-" },
-      { key: "TIR", val: fifa.TIR ?? "-" },
-      { key: "REG", val: fifa.REG ?? "-" },
-      { key: "FIS", val: fifa.FIS ?? "-" },
-    ];
+  // Helpers UI
+  const StatChip = ({ label, value, minWidth = 72 }) => (
+    <div
+      className="stat-chip"
+      style={{
+        display: "flex",
+        alignItems: "center",
+        gap: "6px",
+        padding: "4px 6px",
+        borderRadius: "8px",
+        background: "rgba(255,255,255,0.03)",
+        border: "1px solid rgba(255,255,255,0.07)",
+        minWidth,
+      }}
+    >
+      <div
+        className="lab"
+        style={{
+          fontSize: "9px",
+          letterSpacing: "0.4px",
+          textTransform: "uppercase",
+          color: "rgba(255,255,255,0.55)",
+          minWidth: "30px",
+        }}
+      >
+        {label}
+      </div>
+      <div
+        className="val"
+        style={{ fontSize: "12px", fontWeight: 700, color: "#fff" }}
+      >
+        {value}
+      </div>
+    </div>
+  );
+
+  const StatGroup = ({ title, children }) => (
+    <div
+      className="stat-group"
+      style={{
+        flex: "1 1 100%",
+        padding: "8px",
+        borderRadius: "10px",
+        border: "1px solid rgba(255,255,255,0.08)",
+        background:
+          "linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02))",
+        boxShadow: "inset 0 0 12px rgba(0,0,0,0.25)",
+      }}
+    >
+      <div
+        className="group-title"
+        style={{
+          fontSize: "10px",
+          letterSpacing: "0.6px",
+          textTransform: "uppercase",
+          color: "rgba(255,255,255,0.7)",
+          marginBottom: "6px",
+          display: "inline-flex",
+          alignItems: "center",
+          gap: "6px",
+          padding: "3px 6px",
+          borderRadius: "6px",
+          border: "1px solid rgba(255,255,255,0.08)",
+          background: "rgba(255,255,255,0.03)",
+        }}
+      >
+        {title}
+      </div>
+      <div
+        className="group-grid"
+        style={{ display: "flex", flexWrap: "wrap", gap: "6px 10px" }}
+      >
+        {children}
+      </div>
+    </div>
+  );
 
   function onMove(e) {
     const el = cardRef.current;
@@ -111,8 +183,18 @@ export default function SorareCard({
     setTilt({ rx: 0, ry: 0, lx: 50, ly: 50 });
   }
 
+  // Datos numéricos que usaremos
+  const g = Number(goals ?? stats?.goals ?? 0);
+  const a = Number(assists ?? stats?.assists ?? 0);
+  const sv = Number(saves ?? stats?.saves ?? 0);
+  const cs = Number(cleanSheets ?? stats?.cleanSheets ?? 0);
+
   return (
-    <div className={clsx("card3d-wrapper", className)} onMouseMove={onMove} onMouseLeave={onLeave}>
+    <div
+      className={clsx("card3d-wrapper", className)}
+      onMouseMove={onMove}
+      onMouseLeave={onLeave}
+    >
       <div
         ref={cardRef}
         className={clsx("card3d-root", {
@@ -155,7 +237,14 @@ export default function SorareCard({
               >
                 {totalPoints}
               </div>
-              <div className="pts-lab" style={{ fontSize: "11px", color: "rgba(255,255,255,0.9)", letterSpacing: "0.5px" }}>
+              <div
+                className="pts-lab"
+                style={{
+                  fontSize: "11px",
+                  color: "rgba(255,255,255,0.9)",
+                  letterSpacing: "0.5px",
+                }}
+              >
                 PTS
               </div>
             </div>
@@ -197,89 +286,50 @@ export default function SorareCard({
               padding: "0 6px",
               display: "flex",
               flexWrap: "wrap",
-              gap: "6px 10px",
+              gap: "8px 10px",
               alignItems: "flex-start",
               justifyContent: "flex-start",
               textAlign: "left",
             }}
           >
-            <div
-              className="stat nationality"
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "6px",
-                padding: "4px 6px",
-                borderRadius: "8px",
-                background: "rgba(255,255,255,0.03)",
-                border: "1px solid rgba(255,255,255,0.07)",
-              }}
-            >
-              <div
-                className="lab"
-                style={{
-                  fontSize: "9px",
-                  letterSpacing: "0.4px",
-                  textTransform: "uppercase",
-                  color: "rgba(255,255,255,0.55)",
-                }}
-              >
-                NAC
-              </div>
-              <div className="val" style={{ fontSize: "12px", fontWeight: 700, color: "#fff" }}>
-                {nationality}
-              </div>
-            </div>
-            {(
-              (isGK
-                ? [
-                  { key: "EDAD", val: age },
-                  { key: "PAS", val: fifa.PAS ?? "-" },
-                  { key: "PAR", val: fifa.PAR ?? "-" },
-                  { key: "FIS", val: fifa.FIS ?? "-" },
-                ]
-                : [
-                  { key: "EDAD", val: age },
-                  { key: "PAS", val: fifa.PAS ?? "-" },
-                  { key: "TIR", val: fifa.TIR ?? "-" },
-                  { key: "REG", val: fifa.REG ?? "-" },
-                  { key: "FIS", val: fifa.FIS ?? "-" },
-                ])
-            ).map((s) => (
-              <div
-                className="stat"
-                key={s.key}
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "6px",
-                  padding: "4px 6px",
-                  borderRadius: "8px",
-                  background: "rgba(255,255,255,0.03)",
-                  border: "1px solid rgba(255,255,255,0.07)",
-                  minWidth: "72px",
-                }}
-              >
-                <div
-                  className="lab"
-                  style={{
-                    fontSize: "9px",
-                    letterSpacing: "0.4px",
-                    textTransform: "uppercase",
-                    color: "rgba(255,255,255,0.55)",
-                    minWidth: "30px",
-                  }}
-                >
-                  {s.key}
-                </div>
-                <div className="val" style={{ fontSize: "12px", fontWeight: 700, color: "#fff" }}>
-                  {s.val}
-                </div>
-              </div>
-            ))}
+            {/* Info suelta */}
+            <StatChip label="EDAD" value={age} />
+
+            {/* Grupo ATAQUE */}
+            <StatGroup title="ATAQUE">
+              {isGK ? (
+                <>
+                  <StatChip label="PAS" value={fifa.PAS ?? "-"} />
+                </>
+              ) : (
+                <>
+                  <StatChip label="GOL" value={g} />
+                  <StatChip label="ASI" value={a} />
+                  <StatChip label="TIR" value={fifa.TIR ?? "-"} />
+                  <StatChip label="REG" value={fifa.REG ?? "-"} />
+                  <StatChip label="PAS" value={fifa.PAS ?? "-"} />
+                </>
+              )}
+            </StatGroup>
+
+            {/* Grupo DEFENSA */}
+            <StatGroup title="DEFENSA">
+              {isGK ? (
+                <>
+                  <StatChip label="PAR" value={fifa.PAR ?? "-"} />
+                  <StatChip label="FIS" value={fifa.FIS ?? "-"} />
+                  <StatChip label="CS" value={cs} />
+                </>
+              ) : (
+                <>
+                  <StatChip label="FIS" value={fifa.FIS ?? "-"} />
+                  <StatChip label="CS" value={cs} />
+                </>
+              )}
+            </StatGroup>
           </div>
 
-          {/* Pie: nombre + VAL + posición */}
+          {/* Pie: nombre + bandera + VAL + posición */}
           <div className="face-footer" style={{ marginTop: "10px" }}>
             <div className="name-box" style={{ position: "relative" }}>
               {/* faja translúcida detrás del nombre */}
@@ -297,29 +347,66 @@ export default function SorareCard({
                 }}
               />
               <div
-                className="player-name"
+                className="player-name-row"
                 style={{
                   position: "relative",
-                  fontFamily:
-                    '"Londrina Shadow", system-ui, -apple-system, "Segoe UI", Roboto, Inter, Arial, sans-serif',
-                  fontWeight: 400,
-                  letterSpacing: "0.8px",
-                  fontSize: "40px",
-                  lineHeight: 1.1,
-                  color: "#ffffff",
-                  WebkitTextStroke: `1.1px ${accent}`,
-                  textShadow: `0 0 12px ${accent}80, 0 0 22px ${accent}60, 0 2px 4px rgba(0,0,0,0.9)`,
+                  display: "flex",
+                  alignItems: "baseline",
+                  gap: "10px",
                 }}
               >
-                {name.toUpperCase()}
+                <div
+                  className="player-name"
+                  style={{
+                    fontFamily:
+                      '"Londrina Shadow", system-ui, -apple-system, "Segoe UI", Roboto, Inter, Arial, sans-serif',
+                    fontWeight: 400,
+                    letterSpacing: "0.8px",
+                    fontSize: "40px",
+                    lineHeight: 1.1,
+                    color: "#ffffff",
+                    WebkitTextStroke: `1.1px ${accent}`,
+                    textShadow: `0 0 12px ${accent}80, 0 0 22px ${accent}60, 0 2px 4px rgba(0,0,0,0.9)`,
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    maxWidth: "100%",
+                  }}
+                  title={name.toUpperCase()}
+                >
+                  {name.toUpperCase()}
+                </div>
+
+                {/* Bandera junto al nombre (sin etiqueta) */}
+                <div
+                  className="player-flag"
+                  style={{
+                    fontSize: "20px",
+                    lineHeight: 1,
+                    filter: "drop-shadow(0 1px 1px rgba(0,0,0,0.6))",
+                    transform: "translateY(2px)",
+                  }}
+                  aria-label="Nacionalidad"
+                  title="Nacionalidad"
+                >
+                  {nationality}
+                </div>
               </div>
 
               {/* VALOR (0–1000) */}
               <div
                 className="value"
-                style={{ position: "relative", fontSize: "12px", color: "rgba(255,255,255,0.85)", marginTop: "2px" }}
+                style={{
+                  position: "relative",
+                  fontSize: "12px",
+                  color: "rgba(255,255,255,0.85)",
+                  marginTop: "2px",
+                }}
               >
-                <span className="font-mono">{Number.isFinite(unifiedValue) ? unifiedValue : "—"}</span>/1000
+                <span className="font-mono">
+                  {Number.isFinite(unifiedValue) ? unifiedValue : "—"}
+                </span>
+                /1000
               </div>
             </div>
             <div className="role-pill">{isGK ? "PORTERO" : "CAMPO"}</div>
