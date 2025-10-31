@@ -7,7 +7,7 @@ import "@fontsource/londrina-shadow/400.css";
 import { computePlayerValue, players as DUMMY_PLAYERS } from "../data/dummy";
 
 /**
- * Cromo v4.5 — stats 3×2 sin solapes, foto más alta, badge abajo-dcha, bandera micro
+ * Cromo v4.6 — stats 3×2 con margin-top:44px, foto más alta, badge abajo-dcha, bandera micro
  */
 export default function SorareCard({
                                      rarity = "gold",
@@ -75,7 +75,7 @@ export default function SorareCard({
         borderRadius: 8,
         background: "rgba(255,255,255,0.03)",
         border: "1px solid rgba(255,255,255,0.07)",
-        height: 26, // alto fijo para cálculo de 2 filas
+        height: 26, // alto fijo para 2 filas
         minWidth: 0,
       }}
     >
@@ -96,9 +96,7 @@ export default function SorareCard({
     </div>
   );
 
-  const Placeholder = () => (
-    <div style={{ visibility: "hidden", height: 26 }} />
-  );
+  const Placeholder = () => <div style={{ visibility: "hidden", height: 26 }} />;
 
   function onMove(e) {
     const el = cardRef.current; if (!el) return;
@@ -126,11 +124,8 @@ export default function SorareCard({
     { k: "PAR", v: fifa.PAR ?? "-" },
     { k: "PAS", v: fifa.PAS ?? "-" },
     { k: "FIS", v: fifa.FIS ?? "-" },
-    // Si quieres incluir EDAD para GK, descomenta la siguiente línea y comenta un Placeholder
-    // { k: "EDAD", v: age },
   ];
 
-  // Preparar array 6 elementos para el grid 3×2
   const chips = isGK
     ? [
       ...gkChipsReal,
@@ -194,10 +189,10 @@ export default function SorareCard({
             className="face-photo"
             style={{
               flex: "1 1 auto",
-              minHeight: 320,   // ↑
-              maxHeight: 460,   // ↑
+              minHeight: 320,
+              maxHeight: 460,
               marginTop: 4,
-              marginBottom: 12, // ↓ deja más aire antes de stats
+              marginBottom: 12,
               display: "flex",
               alignItems: "flex-start",
               justifyContent: "center",
@@ -217,10 +212,10 @@ export default function SorareCard({
 
           {/* Stats — grid 3×2, separadas de la foto */}
           <div
-            className="face-stats"
+            className={clsx("face-stats", "face-stats--spaced")}
             style={{
               padding: "0 8px",
-              marginTop: 2,             // baja un pelín más
+              marginTop: 44,          // << Tu petición exacta
               marginBottom: 8,
               display: "grid",
               gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
@@ -228,8 +223,8 @@ export default function SorareCard({
               gap: "8px 8px",
               alignItems: "stretch",
               justifyItems: "stretch",
-              minHeight: 26 * 2 + 8,    // 2 filas
-              maxHeight: 26 * 2 + 8,    // bloquear a 2 filas exactas
+              minHeight: 26 * 2 + 8,  // 2 filas
+              maxHeight: 26 * 2 + 8,  // bloquear a 2 filas exactas
               overflow: "hidden",
             }}
           >
