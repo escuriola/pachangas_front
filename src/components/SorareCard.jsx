@@ -7,7 +7,7 @@ import "@fontsource/londrina-shadow/400.css";
 import { computePlayerValue, players as DUMMY_PLAYERS } from "../data/dummy";
 
 /**
- * Cromo v4.4 — foto más alta sin solapes, stats máx 2 líneas, badge abajo-dcha, bandera mini
+ * Cromo v4.5 — stats 3×2 sin solapes, foto más alta, badge abajo-dcha, bandera micro
  */
 export default function SorareCard({
                                      rarity = "gold",
@@ -52,7 +52,6 @@ export default function SorareCard({
     rarity === "gold" ? "rgba(245,200,76,0.18)" :
       rarity === "silver" ? "rgba(216,216,216,0.18)" : "rgba(184,115,51,0.18)";
 
-  // Derivados
   const cs = Number(cleanSheets ?? stats?.cleanSheets ?? 0);
 
   // ATA/DEF (si no llegan, estimación suave)
@@ -64,19 +63,20 @@ export default function SorareCard({
     : Math.round(((fifa.FIS ?? 0) * 0.7 + Math.min(cs, 10) * 3));
 
   // UI helpers
-  const StatChip = ({ label, value, minWidth = 58 }) => (
+  const StatChip = ({ label, value }) => (
     <div
       className="stat-chip"
       style={{
         display: "flex",
         alignItems: "center",
+        justifyContent: "space-between",
         gap: 6,
-        padding: "3px 6px",
+        padding: "4px 8px",
         borderRadius: 8,
         background: "rgba(255,255,255,0.03)",
         border: "1px solid rgba(255,255,255,0.07)",
-        minWidth,
-        height: 24,
+        height: 26, // alto fijo para cálculo de 2 filas
+        minWidth: 0,
       }}
     >
       <div
@@ -86,7 +86,6 @@ export default function SorareCard({
           letterSpacing: "0.35px",
           textTransform: "uppercase",
           color: "rgba(255,255,255,0.55)",
-          minWidth: 24,
         }}
       >
         {label}
@@ -95,6 +94,10 @@ export default function SorareCard({
         {value}
       </div>
     </div>
+  );
+
+  const Placeholder = () => (
+    <div style={{ visibility: "hidden", height: 26 }} />
   );
 
   function onMove(e) {
@@ -110,7 +113,7 @@ export default function SorareCard({
   }
   function onLeave() { setTilt({ rx: 0, ry: 0, lx: 50, ly: 50 }); }
 
-  // Chips por rol (ordenado para caber en 2 filas)
+  // Chips por rol (exactamente 6 para campo; para portero: 3 + placeholders)
   const fieldChips = [
     { k: "ATA", v: ATA_val },
     { k: "DEF", v: DEF_val },
@@ -119,15 +122,23 @@ export default function SorareCard({
     { k: "REG", v: fifa.REG ?? "-" },
     { k: "FIS", v: fifa.FIS ?? "-" },
   ];
-  const gkChips = [
+  const gkChipsReal = [
     { k: "PAR", v: fifa.PAR ?? "-" },
     { k: "PAS", v: fifa.PAS ?? "-" },
     { k: "FIS", v: fifa.FIS ?? "-" },
+    // Si quieres incluir EDAD para GK, descomenta la siguiente línea y comenta un Placeholder
+    // { k: "EDAD", v: age },
   ];
 
-  // Limitar a 2 líneas: edad + (hasta X chips); ajusta si tu ancho de carta es menor
-  const MAX_CHIPS = isGK ? 4 : 5; // además de EDAD
-  const chips = (isGK ? gkChips : fieldChips).slice(0, MAX_CHIPS);
+  // Preparar array 6 elementos para el grid 3×2
+  const chips = isGK
+    ? [
+      ...gkChipsReal,
+      <Placeholder key="ph1" />,
+      <Placeholder key="ph2" />,
+      <Placeholder key="ph3" />,
+    ].slice(0, 6)
+    : fieldChips;
 
   return (
     <div className={clsx("card3d-wrapper", className)} onMouseMove={onMove} onMouseLeave={onLeave}>
@@ -144,7 +155,7 @@ export default function SorareCard({
           "--ly": `${tilt.ly}%`,
         }}
       >
-        {/* Cara como columna para fijar el pie y poder posicionar el badge */}
+        {/* Cara como columna; reservamos espacio claro para stats y pie */}
         <div
           className="card3d-face"
           style={{ display: "flex", flexDirection: "column", height: "100%", position: "relative" }}
@@ -178,15 +189,15 @@ export default function SorareCard({
             </div>
           </div>
 
-          {/* Foto (ahora puede crecer más, sin solapar stats/foot) */}
+          {/* Foto (más alta pero sin invadir stats) */}
           <div
             className="face-photo"
             style={{
               flex: "1 1 auto",
-              minHeight: 300,   // ↑ antes 260
-              maxHeight: 420,   // ↑ antes 340
-              marginTop: 0,
-              marginBottom: 8,
+              minHeight: 320,   // ↑
+              maxHeight: 460,   // ↑
+              marginTop: 4,
+              marginBottom: 12, // ↓ deja más aire antes de stats
               display: "flex",
               alignItems: "flex-start",
               justifyContent: "center",
@@ -204,26 +215,34 @@ export default function SorareCard({
             />
           </div>
 
-          {/* Stats (máximo 2 líneas) */}
+          {/* Stats — grid 3×2, separadas de la foto */}
           <div
             className="face-stats"
             style={{
-              padding: "0 6px",
-              display: "flex",
-              flexWrap: "wrap",
-              gap: "6px 8px",
-              alignItems: "flex-start",
-              maxHeight: 56,   // ≈ 2 filas (24px chip + 4-6px gap)
+              padding: "0 8px",
+              marginTop: 2,             // baja un pelín más
+              marginBottom: 8,
+              display: "grid",
+              gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
+              gridAutoRows: "26px",
+              gap: "8px 8px",
+              alignItems: "stretch",
+              justifyItems: "stretch",
+              minHeight: 26 * 2 + 8,    // 2 filas
+              maxHeight: 26 * 2 + 8,    // bloquear a 2 filas exactas
               overflow: "hidden",
             }}
           >
-            <StatChip label="EDAD" value={age} />
-            {chips.map((s) => (
-              <StatChip key={s.k} label={s.k} value={s.v} />
-            ))}
+            {chips.map((c, idx) =>
+              React.isValidElement(c) ? (
+                React.cloneElement(c, { key: `chip-${idx}` })
+              ) : (
+                <StatChip key={idx} label={c.k} value={c.v} />
+              )
+            )}
           </div>
 
-          {/* Pie fijo abajo (nombre + valor) */}
+          {/* Pie (nombre + valor) */}
           <div className="face-footer" style={{ marginTop: "auto", position: "relative", zIndex: 3, paddingTop: 6 }}>
             <div className="name-box" style={{ position: "relative" }}>
               {/* Faja sutil detrás del nombre */}
@@ -272,11 +291,11 @@ export default function SorareCard({
                   {name.toUpperCase()}
                 </div>
 
-                {/* Bandera aún más pequeña */}
+                {/* Bandera micro */}
                 <div
                   className="player-flag"
                   style={{
-                    fontSize: 11,
+                    fontSize: 10,
                     lineHeight: 1,
                     filter: "drop-shadow(0 1px 1px rgba(0,0,0,0.6))",
                     transform: "translateY(1px)",
