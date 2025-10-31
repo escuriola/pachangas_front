@@ -6,7 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="9519cfb5-7d2e-4452-b01d-d032811f5eeb" name="Changes" comment="TeamGenerator.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/SorareCard.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/SorareCard.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -104,30 +103,7 @@
       <workItem from="1755011343659" duration="5201000" />
       <workItem from="1761309680906" duration="4431000" />
       <workItem from="1761550021889" duration="4273000" />
-    </task>
-    <task id="LOCAL-00070" summary="Clean front.">
-      <option name="closed" value="true" />
-      <created>1761563088436</created>
-      <option name="number" value="00070" />
-      <option name="presentableId" value="LOCAL-00070" />
-      <option name="project" value="LOCAL" />
-      <updated>1761563088436</updated>
-    </task>
-    <task id="LOCAL-00071" summary="Clean front.">
-      <option name="closed" value="true" />
-      <created>1761575226705</created>
-      <option name="number" value="00071" />
-      <option name="presentableId" value="LOCAL-00071" />
-      <option name="project" value="LOCAL" />
-      <updated>1761575226705</updated>
-    </task>
-    <task id="LOCAL-00072" summary="Add pages.">
-      <option name="closed" value="true" />
-      <created>1761643081519</created>
-      <option name="number" value="00072" />
-      <option name="presentableId" value="LOCAL-00072" />
-      <option name="project" value="LOCAL" />
-      <updated>1761643081519</updated>
+      <workItem from="1761898165566" duration="963000" />
     </task>
     <task id="LOCAL-00073" summary="Add pages.">
       <option name="closed" value="true" />
@@ -497,7 +473,31 @@
       <option name="project" value="LOCAL" />
       <updated>1761746276893</updated>
     </task>
-    <option name="localTasksCounter" value="119" />
+    <task id="LOCAL-00119" summary="TeamGenerator.">
+      <option name="closed" value="true" />
+      <created>1761749930947</created>
+      <option name="number" value="00119" />
+      <option name="presentableId" value="LOCAL-00119" />
+      <option name="project" value="LOCAL" />
+      <updated>1761749930948</updated>
+    </task>
+    <task id="LOCAL-00120" summary="TeamGenerator.">
+      <option name="closed" value="true" />
+      <created>1761898486371</created>
+      <option name="number" value="00120" />
+      <option name="presentableId" value="LOCAL-00120" />
+      <option name="project" value="LOCAL" />
+      <updated>1761898486371</updated>
+    </task>
+    <task id="LOCAL-00121" summary="TeamGenerator.">
+      <option name="closed" value="true" />
+      <created>1761898787651</created>
+      <option name="number" value="00121" />
+      <option name="presentableId" value="LOCAL-00121" />
+      <option name="project" value="LOCAL" />
+      <updated>1761898787651</updated>
+    </task>
+    <option name="localTasksCounter" value="122" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

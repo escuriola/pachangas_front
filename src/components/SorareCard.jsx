@@ -7,7 +7,7 @@ import "@fontsource/londrina-shadow/400.css";
 import { computePlayerValue, players as DUMMY_PLAYERS } from "../data/dummy";
 
 /**
- * Cromo v4.3 — pie fijo abajo, stats máx 2 líneas, bandera mini
+ * Cromo v4.4 — foto más alta sin solapes, stats máx 2 líneas, badge abajo-dcha, bandera mini
  */
 export default function SorareCard({
                                      rarity = "gold",
@@ -53,9 +53,6 @@ export default function SorareCard({
       rarity === "silver" ? "rgba(216,216,216,0.18)" : "rgba(184,115,51,0.18)";
 
   // Derivados
-  const g  = Number(goals ?? stats?.goals ?? 0);
-  const a  = Number(assists ?? stats?.assists ?? 0);
-  const sv = Number(saves ?? stats?.saves ?? 0);
   const cs = Number(cleanSheets ?? stats?.cleanSheets ?? 0);
 
   // ATA/DEF (si no llegan, estimación suave)
@@ -79,7 +76,7 @@ export default function SorareCard({
         background: "rgba(255,255,255,0.03)",
         border: "1px solid rgba(255,255,255,0.07)",
         minWidth,
-        height: 24, // altura contenida para calcular dos filas
+        height: 24,
       }}
     >
       <div
@@ -113,7 +110,7 @@ export default function SorareCard({
   }
   function onLeave() { setTilt({ rx: 0, ry: 0, lx: 50, ly: 50 }); }
 
-  // Chips por rol (orden optimizado para caber en 2 líneas)
+  // Chips por rol (ordenado para caber en 2 filas)
   const fieldChips = [
     { k: "ATA", v: ATA_val },
     { k: "DEF", v: DEF_val },
@@ -128,9 +125,8 @@ export default function SorareCard({
     { k: "FIS", v: fifa.FIS ?? "-" },
   ];
 
-  // Limitar a 2 líneas: edad + (hasta 6 chips más suele caber en 2 filas en 340–380px)
-  // Si tu carta es más estrecha, baja este límite a 5.
-  const MAX_CHIPS = isGK ? 4 : 6; // además de EDAD
+  // Limitar a 2 líneas: edad + (hasta X chips); ajusta si tu ancho de carta es menor
+  const MAX_CHIPS = isGK ? 4 : 5; // además de EDAD
   const chips = (isGK ? gkChips : fieldChips).slice(0, MAX_CHIPS);
 
   return (
@@ -148,8 +144,11 @@ export default function SorareCard({
           "--ly": `${tilt.ly}%`,
         }}
       >
-        {/* Cara como columna para fijar el pie abajo */}
-        <div className="card3d-face" style={{ display: "flex", flexDirection: "column", height: "100%" }}>
+        {/* Cara como columna para fijar el pie y poder posicionar el badge */}
+        <div
+          className="card3d-face"
+          style={{ display: "flex", flexDirection: "column", height: "100%", position: "relative" }}
+        >
           <div className="card3d-glint" />
 
           {/* Cabecera */}
@@ -179,13 +178,13 @@ export default function SorareCard({
             </div>
           </div>
 
-          {/* Foto (toma el espacio flexible) */}
+          {/* Foto (ahora puede crecer más, sin solapar stats/foot) */}
           <div
             className="face-photo"
             style={{
               flex: "1 1 auto",
-              minHeight: 260,
-              maxHeight: 340,
+              minHeight: 300,   // ↑ antes 260
+              maxHeight: 420,   // ↑ antes 340
               marginTop: 0,
               marginBottom: 8,
               display: "flex",
@@ -214,7 +213,7 @@ export default function SorareCard({
               flexWrap: "wrap",
               gap: "6px 8px",
               alignItems: "flex-start",
-              maxHeight: 60,   // ≈ 2 filas (24px altura chip + 6px gap)
+              maxHeight: 56,   // ≈ 2 filas (24px chip + 4-6px gap)
               overflow: "hidden",
             }}
           >
@@ -224,7 +223,7 @@ export default function SorareCard({
             ))}
           </div>
 
-          {/* Pie fijo abajo */}
+          {/* Pie fijo abajo (nombre + valor) */}
           <div className="face-footer" style={{ marginTop: "auto", position: "relative", zIndex: 3, paddingTop: 6 }}>
             <div className="name-box" style={{ position: "relative" }}>
               {/* Faja sutil detrás del nombre */}
@@ -277,7 +276,7 @@ export default function SorareCard({
                 <div
                   className="player-flag"
                   style={{
-                    fontSize: 12,
+                    fontSize: 11,
                     lineHeight: 1,
                     filter: "drop-shadow(0 1px 1px rgba(0,0,0,0.6))",
                     transform: "translateY(1px)",
@@ -291,27 +290,32 @@ export default function SorareCard({
                 </div>
               </div>
 
-              {/* VALOR (0–1000) + rol */}
+              {/* VALOR (0–1000) */}
               <div
-                className="value-row"
+                className="value"
                 style={{
                   position: "relative",
                   marginTop: 2,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  gap: 8,
+                  fontSize: 12,
+                  color: "rgba(255,255,255,0.85)",
                 }}
               >
-                <div
-                  className="value"
-                  style={{ fontSize: 12, color: "rgba(255,255,255,0.85)" }}
-                >
-                  <span className="font-mono">{Number.isFinite(unifiedValue) ? unifiedValue : "—"}</span>/1000
-                </div>
-                <div className="role-pill">{isGK ? "PORTERO" : "CAMPO"}</div>
+                <span className="font-mono">{Number.isFinite(unifiedValue) ? unifiedValue : "—"}</span>/1000
               </div>
             </div>
+          </div>
+
+          {/* Badge PORTERO/CAMPO abajo-derecha (fijo) */}
+          <div
+            className="role-pill"
+            style={{
+              position: "absolute",
+              right: 8,
+              bottom: 8,
+              zIndex: 4,
+            }}
+          >
+            {isGK ? "PORTERO" : "CAMPO"}
           </div>
         </div>
 
