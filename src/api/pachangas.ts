@@ -19,8 +19,8 @@ export function mapNodeToCardProps(node: any, included?: any[]) {
   const a = node.attributes ?? {};
   const photo = resolvePhotoUrl(node, included);
 
-  // Hasta que tengas campo "position" en Drupal:
-  const position = "CAMPO"; // o infiere si quieres por número de paradas
+  const posRaw = String(a.field_player_position ?? "field").toLowerCase();
+  const position = posRaw === "goalkeeper" ? "PORTERO" : "CAMPO";
 
   // Tus “fifa-like”
   const fifa = {
@@ -66,6 +66,7 @@ export async function fetchPlayers() {
     "field_player_stats_saves",
     "field_player_value",
     "field_player_photo",
+    'field_player_position',
   ].join(",");
 
   const url =
